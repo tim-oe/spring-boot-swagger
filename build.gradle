@@ -1,0 +1,60 @@
+/*
+gradle build file genned from idea
+setup is for spring boot add using spring initializr
+see https://www.jetbrains.com/help/idea/spring-boot.html
+see https://www.youtube.com/watch?v=he63dwZdhOM
+ */
+buildscript {
+    ext {
+        springBootVersion = '2.1.1.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'com.outboundengine'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    //spring boot configs
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // swagger integration see  https://piotrminkowski.wordpress.com/2018/02/19/versioning-rest-api-with-spring-boot-and-swagger/   
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    compile group: 'io.springfox', name: 'springfox-spring-web', version: '2.9.2'
+
+    // datasource deps 
+    compile group: 'com.zaxxer', name: 'HikariCP', version: '3.3.0'
+    compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.1.1.RELEASE'
+
+    //logging
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: '2.1.1.RELEASE'
+    
+    // utility libs
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
+}
+
+configurations {
+    compile {
+        //https://www.baeldung.com/spring-boot-hikari
+        exclude group: 'org.apache.tomcat'
+        exclude module: 'tomcat-jdbc'
+    }
+}
+
