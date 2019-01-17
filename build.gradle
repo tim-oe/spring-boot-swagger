@@ -3,24 +3,36 @@ gradle build file genned from idea
 setup is for spring boot add using spring initializr
 see https://www.jetbrains.com/help/idea/spring-boot.html
 see https://www.youtube.com/watch?v=he63dwZdhOM
+
+TODO:
+https://github.com/spotbugs/spotbugs-gradle-plugin/issues/32
+
  */
 buildscript {
     ext {
         springBootVersion = '2.1.1.RELEASE'
     }
+
     repositories {
         mavenCentral()
     }
+
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
 
+/*
+plugins {
+    //TBD other plugins
+}
+*/
+
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
-group = 'com.outboundengine'
+group = 'org.tec'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
@@ -29,9 +41,18 @@ repositories {
 }
 
 dependencies {
+    ext {
+        lombokVersion = '1.18.4'
+    }
+
+    //https://github.com/rzwitserloot/lombok/issues/1945
+    annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+
     //spring boot configs
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation ('org.springframework.boot:spring-boot-starter-web') {
+    }
+    testImplementation ('org.springframework.boot:spring-boot-starter-test') {
+    }
 
     // swagger integration see  https://piotrminkowski.wordpress.com/2018/02/19/versioning-rest-api-with-spring-boot-and-swagger/   
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
@@ -43,18 +64,22 @@ dependencies {
     compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.1.1.RELEASE'
 
-    //logging
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-logging', version: '2.1.1.RELEASE'
-    
+    // logging https://www.baeldung.com/spring-boot-logging
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: '2.1.1.RELEASE'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
+
+    // https://stackoverflow.com/questions/17729384/lombok-added-but-getters-and-setters-not-recognized-in-intellij-idea
+    compileOnly("org.projectlombok:lombok:$lombokVersion")
+
     // utility libs
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
-}
 
-configurations {
-    compile {
-        //https://www.baeldung.com/spring-boot-hikari
-        exclude group: 'org.apache.tomcat'
-        exclude module: 'tomcat-jdbc'
+    configurations {
+        compile {
+            //https://www.baeldung.com/spring-boot-logging
+            exclude group: 'org.springframework.boot',  module: 'spring-boot-starter-logging'
+            //https://stackoverflow.com/questions/51483775/debug-logging-causes-stackoverflowerror-in-spring-boot-2-0-3-release
+            exclude group: 'org.slf4j' , module: 'jul-to-slf4j'
+        }
     }
 }
-
