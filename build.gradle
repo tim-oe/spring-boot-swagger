@@ -61,10 +61,8 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:$lombokVersion")
 
     //spring boot configs
-    implementation ('org.springframework.boot:spring-boot-starter-web') {
-    }
-    testImplementation ('org.springframework.boot:spring-boot-starter-test') {
-    }
+    implementation ('org.springframework.boot:spring-boot-starter-web')
+    testImplementation ('org.springframework.boot:spring-boot-starter-test')
 
     // swagger integration see  https://piotrminkowski.wordpress.com/2018/02/19/versioning-rest-api-with-spring-boot-and-swagger/   
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
