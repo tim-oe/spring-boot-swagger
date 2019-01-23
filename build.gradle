@@ -41,6 +41,11 @@ flyway {
                  'filesystem:./src/main/resources/db/data']
 }
 
+// https://docs.gradle.org/current/userguide/checkstyle_plugin.html
+checkstyle {
+    ignoreFailures = true
+    configFile = file("config/checkstyle/checkstyle.xml")
+}
 
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
@@ -54,6 +59,16 @@ sourceCompatibility = '1.8'
 
 repositories {
     mavenCentral()
+}
+
+tasks.withType(Checkstyle) {
+    // had issues because of having xml libs under endorsed structure
+    // https://docs.oracle.com/javase/8/docs/technotes/guides/standards/
+    reports {
+        xml.enabled false
+        html.enabled true
+        html.stylesheet resources.text.fromFile('config/checkstyle/stylesheet.xsl')
+    }
 }
 
 dependencies {
