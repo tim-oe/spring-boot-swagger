@@ -26,10 +26,14 @@ buildscript {
 plugins {
     // https://flywaydb.org/getstarted/firststeps/gradle
     // https://flywaydb.org/documentation/gradle/
-    id "org.flywaydb.flyway" version "5.2.4"
+    id 'org.flywaydb.flyway' version '5.2.4'
 
     // https://docs.gradle.org/current/userguide/checkstyle_plugin.html
     id 'checkstyle'
+
+    // https://plugins.gradle.org/plugin/com.github.spotbugs
+    // https://spotbugs.readthedocs.io/en/stable/gradle.html
+    id 'com.github.spotbugs' version '1.6.9'
 }
 
 flyway {
@@ -51,6 +55,7 @@ apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'org.flywaydb.flyway'
+apply plugin: 'com.github.spotbugs'
 apply plugin: 'checkstyle'
 
 group = 'org.tec'
@@ -64,13 +69,21 @@ repositories {
 tasks.withType(Checkstyle) {
     // had issues because of having xml libs under endorsed structure
     // https://docs.oracle.com/javase/8/docs/technotes/guides/standards/
+    // https://github.com/checkstyle/contribution/tree/master/xsl
     reports {
         xml.enabled false
         html.enabled true
-        html.stylesheet resources.text.fromFile('config/checkstyle/stylesheet.xsl')
+        //html.stylesheet resources.text.fromFile('config/checkstyle/stylesheet.xsl')
     }
 }
 
+tasks.withType(com.github.spotbugs.SpotBugsTask) {
+    // https://github.com/spotbugs/spotbugs-gradle-plugin/issues/32
+    reports {
+        xml.enabled = false
+        html.enabled = true
+    }
+}
 dependencies {
     ext {
         lombokVersion = '1.18.4'
