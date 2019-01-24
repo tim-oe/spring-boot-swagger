@@ -23,7 +23,7 @@ public class DatasourceInformationDbaImpl implements DatasourceInformationDba {
     /**
      * resultset extractor
      */
-    protected ResultSetExtractor<String> StringExtractor = new ResultSetExtractor<String>() {
+    protected ResultSetExtractor<String> stringExtractor = new ResultSetExtractor<String>() {
         /** {@inheritDoc} */
         @Override()
         public String extractData(ResultSet rs) throws SQLException {
@@ -43,6 +43,6 @@ public class DatasourceInformationDbaImpl implements DatasourceInformationDba {
             }
         };
 
-        return jdbcTemplate.query(psc, StringExtractor);
+        return jdbcTemplate.query(psc, stringExtractor);
     }
 };
