@@ -1,4 +1,4 @@
-CREATE TABLE `people` (
+CREATE TABLE `person` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `email` varchar(100) NOT NULL COMMENT 'email address',
   `first_name` varchar(30) DEFAULT NULL COMMENT 'first name',

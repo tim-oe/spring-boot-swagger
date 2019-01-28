@@ -121,6 +121,8 @@ dependencies {
 
     // utility libs
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
+    // https://www.baeldung.com/entity-to-and-from-dto-for-a-java-spring-application
+    compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'
 
     configurations {
         compile {
@@ -131,3 +133,7 @@ dependencies {
         }
     }
 }
+
+ task db-reset(dependsOn: flywayClean, flywayMigrate)
+
+//db reset: gradle flywayClean flywayMigrate
