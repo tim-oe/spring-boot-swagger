@@ -41,8 +41,8 @@ flyway {
     user = 'root'
     password = 'root'
     schemas = ['springboot_swagger']
-    locations = ['filesystem:./src/main/resources/db/migration',
-                 'filesystem:./src/main/resources/db/data']
+    locations = ['filesystem:./src/main/resources/db/schema',
+                 'filesystem:./src/main/resources/db/functions']
 }
 
 // https://docs.gradle.org/current/userguide/checkstyle_plugin.html
@@ -115,14 +115,16 @@ dependencies {
     // logging https://www.baeldung.com/spring-boot-logging
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: '2.1.1.RELEASE'
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
-    
-    // https://stackoverflow.com/questions/17729384/lombok-added-but-getters-and-setters-not-recognized-in-intellij-idea
-    compileOnly("org.projectlombok:lombok:$lombokVersion")
 
     // utility libs
     // https://www.baeldung.com/entity-to-and-from-dto-for-a-java-spring-application
     compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'
 
+    //build utilities
+    // https://stackoverflow.com/questions/17729384/lombok-added-but-getters-and-setters-not-recognized-in-intellij-idea
+    compileOnly("org.projectlombok:lombok:$lombokVersion")
+    compileOnly("com.github.spotbugs:3.1.10")
+    
     configurations {
         compile {
             //https://www.baeldung.com/spring-boot-logging
