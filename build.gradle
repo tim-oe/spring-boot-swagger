@@ -28,7 +28,7 @@ plugins {
 
     // https://plugins.gradle.org/plugin/com.github.spotbugs
     // https://spotbugs.readthedocs.io/en/stable/gradle.html
-    id 'com.github.spotbugs' version '1.6.9'
+    id 'com.github.spotbugs' version '1.6.10'
 }
 
 flyway {
@@ -42,7 +42,7 @@ flyway {
 
 // https://docs.gradle.org/current/userguide/checkstyle_plugin.html
 checkstyle {
-    ignoreFailures = true
+    ignoreFailures = false
     configFile = file("config/checkstyle/checkstyle.xml")
 }
 
@@ -119,8 +119,10 @@ dependencies {
     //build utilities
     // https://stackoverflow.com/questions/17729384/lombok-added-but-getters-and-setters-not-recognized-in-intellij-idea
     compileOnly("org.projectlombok:lombok:$lombokVersion")
-    compileOnly("com.github.spotbugs:3.1.10")
-    
+    // https://mvnrepository.com/artifact/com.github.spotbugs/spotbugs
+    compileOnly group: 'com.github.spotbugs', name: 'spotbugs', version: '3.1.11'
+    compileOnly group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
+
     configurations {
         compile {
             //https://www.baeldung.com/spring-boot-logging
@@ -139,4 +141,12 @@ dependencies {
 task 'db.reset' {
     description 'task to drop and reload the DB'
     dependsOn flywayClean,flywayMigrate
+}
+
+/**
+ * add db reset to test 
+ * https://discuss.gradle.org/t/adding-a-dependson-to-an-existing-task/6463
+ */
+test{
+    dependsOn 'db.reset'
 }
