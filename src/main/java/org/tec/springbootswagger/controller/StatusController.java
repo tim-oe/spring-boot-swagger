@@ -17,10 +17,10 @@ import javax.sql.DataSource;
 public class StatusController {
 
     @Autowired
-    private DataSource dataSource;
+    protected transient DataSource dataSource;
 
     @Autowired
-    DatasourceInformationDba datasourceInformationDba;
+    protected transient DatasourceInformationDba datasourceInformationDba;
 
     @GetMapping("/v1.0")
     public Response<Status> statusv1() {

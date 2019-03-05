@@ -3,34 +3,21 @@ gradle build file genned from idea
 setup is for spring boot add using spring initializr
 https://www.jetbrains.com/help/idea/spring-boot.html
 https://www.youtube.com/watch?v=he63dwZdhOM 
-https://discuss.gradle.org/t/how-to-remove-a-task-dependency/7481/7 
+https://discuss.gradle.org/t/how-to-remove-a-task-dependency/7481/7
+https://docs.gradle.org/current/javadoc/constant-values.html#org.gradle.api.artifacts.Dependency.CLASSIFIER
 **/
 buildscript {
-    ext {
-        springBootVersion = '2.1.1.RELEASE'
-    }
-
     repositories {
         mavenCentral()
     }
 
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:$SPRING_BOOT_VERSION")
     }
 }
 
 plugins {
     id 'java'
-
-    // https://spring.io/projects/spring-boot
-    id "org.springframework.boot" version "2.1.3.RELEASE"
-
-    // https://docs.spring.io/dependency-management-plugin/docs/current-SNAPSHOT/reference/html/
-    id "io.spring.dependency-management" version "1.0.7.RELEASE"
-    
-    // https://flywaydb.org/getstarted/firststeps/gradle
-    // https://flywaydb.org/documentation/gradle/
-    id 'org.flywaydb.flyway' version '5.2.4'
 
     // https://docs.gradle.org/current/userguide/checkstyle_plugin.html
     // http://checkstyle.sourceforge.net/
@@ -40,21 +27,27 @@ plugins {
     // https://docs.gradle.org/current/userguide/pmd_plugin.html
     id 'pmd'
 
-    //https://plugins.gradle.org/plugin/de.aaschmid.cpd
-    // TEC not working
-    //id "de.aaschmid.cpd" version "1.2"
-    
-    // https://plugins.gradle.org/plugin/com.github.spotbugs
-    // https://spotbugs.readthedocs.io/en/stable/gradle.html
-    id 'com.github.spotbugs' version '1.6.10'
-
-    id "name.remal.spotbugs-settings" version "1.0.113"
-    
     // https://www.jacoco.org/jacoco/
     // https://docs.gradle.org/current/userguide/jacoco_plugin.html
     id 'jacoco'
+
+    // https://spring.io/projects/spring-boot
+    id 'org.springframework.boot' version '2.1.3.RELEASE'
+
+    // https://docs.spring.io/dependency-management-plugin/docs/current-SNAPSHOT/reference/html/
+    id 'io.spring.dependency-management' version '1.0.7.RELEASE'
+    
+    // https://flywaydb.org/getstarted/firststeps/gradle
+    // https://flywaydb.org/documentation/gradle/
+    id 'org.flywaydb.flyway' version '5.2.4'
+
+    // https://plugins.gradle.org/plugin/com.github.spotbugs
+    // https://spotbugs.readthedocs.io/en/stable/gradle.html
+    // https://remal.gitlab.io/gradle-plugins/
+    id 'com.github.spotbugs' version '1.6.10'
 }
 
+// https://flywaydb.org/documentation/gradle/
 flyway {
     url = 'jdbc:mariadb://localhost'
     user = 'root'
@@ -81,36 +74,23 @@ tasks.withType(Checkstyle) {
 
 // https://docs.gradle.org/current/dsl/org.gradle.testing.jacoco.tasks.JacocoReport.html
 // https://reflectoring.io/jacoco/
-/*
-jacocoTestReport {
+tasks.withType(JacocoReport) {
     reports {
         html.enabled true
         xml.enabled false
         csv.enabled false
-        html.destination file("${buildDir}/jacocoHtml")
+//        html.destination file("${buildDir}/jacocoHtml")
     }
 }
-*/
 
 // https://stackoverflow.com/questions/17237115/pmd-gradle-plugin-remove-pmdtest-upon-gradle-check
 pmd.sourceSets = [sourceSets.main]
-
-// https://github.com/aaschmid/gradle-cpd-plugin
-//tasks.withType(de.aaschmid.gradle.plugins.cpd.Cpd) {
-//    reports {
-//        text.enabled = true
-//        xml.enabled = false
-//    }
-//    source = [file('src/main/java')]
-//}
 
 // https://github.com/spotbugs/spotbugs-gradle-plugin/issues/32
 // https://spotbugs.readthedocs.io/en/latest/gradle.html
 // https://spotbugs.readthedocs.io/en/latest/gradle.html#configure-gradle-plugin
 tasks.withType(com.github.spotbugs.SpotBugsTask) {
-//    ignoreFailures = false
-//    effort = 'max'
-//    reportLevel = 'high'
+    ignoreFailures = false
     spotbugsTest.enabled = false
     
     reports {
@@ -130,22 +110,21 @@ repositories {
 dependencies {
     ext {
         lombokVersion = '1.18.4'
-        springVersion = '2.1.2.RELEASE'
     }
-
-    //https://github.com/rzwitserloot/lombok/issues/1945
-    annotationProcessor("org.projectlombok:lombok:$lombokVersion")
-
+    
     //spring boot configs
     implementation ('org.springframework.boot:spring-boot-starter-web')
     testImplementation ('org.springframework.boot:spring-boot-starter-test')
 
+    //https://github.com/rzwitserloot/lombok/issues/1945
+    annotationProcessor("org.projectlombok:lombok:$lombokVersion")
+    
     // actuator for spring boot admin
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: "$springVersion"
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: "$SPRING_BOOT_VERSION"
 
     // security modules
     // https://stackoverflow.com/questions/37285016/what-is-username-and-password-when-starting-spring-boot-with-tomcat
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: "$springVersion"
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: "$SPRING_BOOT_VERSION"
 
     // swagger integration  
     // https://piotrminkowski.wordpress.com/2018/02/19/versioning-rest-api-with-spring-boot-and-swagger/   
@@ -156,10 +135,10 @@ dependencies {
     // datasource deps 
     compile group: 'com.zaxxer', name: 'HikariCP', version: '3.3.0'
     compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: "$springVersion"
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: "$SPRING_BOOT_VERSION"
 
     // logging https://www.baeldung.com/spring-boot-logging
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: "$springVersion"
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: "$SPRING_BOOT_VERSION"
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
 
     // utility libs
@@ -168,9 +147,10 @@ dependencies {
 
     //build utilities
     // https://stackoverflow.com/questions/17729384/lombok-added-but-getters-and-setters-not-recognized-in-intellij-idea
-    compileOnly("org.projectlombok:lombok:$lombokVersion")
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: "$lombokVersion"
 
-    testRuntimeOnly group: 'org.slf4j', name: 'slf4j-api', version: '1.7.26'
+    // https://www.slf4j.org/codes.html#StaticLoggerBinder
+    testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.26'
 
     configurations {
         compile {

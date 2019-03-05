@@ -18,12 +18,12 @@ public class DatasourceInformationDbaImpl implements DatasourceInformationDba {
     private static final String VERSION_SQL = "SELECT VERSION()";
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    protected transient JdbcTemplate jdbcTemplate;
 
     /**
      * resultset extractor
      */
-    protected ResultSetExtractor<String> stringExtractor = new ResultSetExtractor<String>() {
+    protected transient ResultSetExtractor<String> stringExtractor = new ResultSetExtractor<String>() {
         /** {@inheritDoc} */
         @Override()
         public String extractData(ResultSet rs) throws SQLException {
@@ -35,6 +35,7 @@ public class DatasourceInformationDbaImpl implements DatasourceInformationDba {
     };
 
     @Override
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     public String getVersion() {
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
@@ -45,4 +46,4 @@ public class DatasourceInformationDbaImpl implements DatasourceInformationDba {
 
         return jdbcTemplate.query(psc, stringExtractor);
     }
-};
+}

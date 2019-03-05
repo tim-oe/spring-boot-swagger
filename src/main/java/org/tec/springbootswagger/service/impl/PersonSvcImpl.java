@@ -12,12 +12,13 @@ import org.tec.springbootswagger.service.PersonSvc;
 public class PersonSvcImpl implements PersonSvc {
 
     @Autowired
-    PersonRepository personRepository;
+    protected transient PersonRepository personRepository;
 
     @Autowired
-    ModelMapper modelMapper;
+    protected transient ModelMapper modelMapper;
 
     @Override
+    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
     public PersonDto create(PersonDto person) {
         PersonEntity pe = modelMapper.map(person, PersonEntity.class);
         pe = personRepository.save(pe);
