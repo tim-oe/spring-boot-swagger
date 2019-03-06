@@ -14,17 +14,17 @@ import javax.sql.DataSource;
 @SpringBootTest(classes=SpringbootSwaggerApplication.class)
 public class SpringbootSwaggerApplicationTest {
 
-        @Autowired
-        private DataSource dataSource;
+    @Autowired
+    private DataSource dataSource;
 
-        @Test
-        public void hikariConnectionPoolIsConfigured() {
-            Assert.assertNotNull("datasource not available", dataSource);
-            Assert.assertEquals("datasource is not HikariCP " + dataSource.getClass().getName(), HikariDataSource.class.getName(), dataSource.getClass().getName());
-        }
-
-        @Test
-        public void contextLoads() {
-            //TBD
-        }
+    @Test
+    public void hikariConnectionPoolIsConfigured() {
+        Assert.assertNotNull("datasource not available", dataSource);
+        Assert.assertEquals("datasource is not HikariCP " + dataSource.getClass().getName(), HikariDataSource.class.getName(), dataSource.getClass().getName());
     }
+
+    @Test
+    public void contextLoads() {
+        //TBD
+    }
+}

@@ -1,50 +1,38 @@
 /**
-gradle build file genned from idea
-setup is for spring boot add using spring initializr
-https://www.jetbrains.com/help/idea/spring-boot.html
-https://www.youtube.com/watch?v=he63dwZdhOM 
-https://discuss.gradle.org/t/how-to-remove-a-task-dependency/7481/7
-https://docs.gradle.org/current/javadoc/constant-values.html#org.gradle.api.artifacts.Dependency.CLASSIFIER
-**/
+ * root build script
+ * https://github.com/aurmam/gradle-multimodule-app
+ *
+ * gradle build file genned from idea
+ * setup is for spring boot add using spring initializr
+ * https://www.jetbrains.com/help/idea/spring-boot.html
+ * https://www.youtube.com/watch?v=he63dwZdhOM
+ * https://discuss.gradle.org/t/how-to-remove-a-task-dependency/7481/7
+ * https://docs.gradle.org/current/javadoc/constant-values.html#org.gradle.api.artifacts.Dependency.CLASSIFIER
+ **/
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
 
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:$SPRING_BOOT_VERSION")
+        classpath 'io.spring.gradle:dependency-management-plugin:1.0.7.RELEASE'
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:2.1.3.RELEASE"
+        classpath "gradle.plugin.com.github.spotbugs:spotbugs-gradle-plugin:1.6.10"
     }
 }
 
 plugins {
     id 'java'
+    id 'idea'
+    id "io.spring.dependency-management" version "1.0.7.RELEASE"
 
-    // https://docs.gradle.org/current/userguide/checkstyle_plugin.html
-    // http://checkstyle.sourceforge.net/
-    id 'checkstyle'
-
-    // https://pmd.github.io/
-    // https://docs.gradle.org/current/userguide/pmd_plugin.html
-    id 'pmd'
-
-    // https://www.jacoco.org/jacoco/
-    // https://docs.gradle.org/current/userguide/jacoco_plugin.html
-    id 'jacoco'
-
-    // https://spring.io/projects/spring-boot
-    id 'org.springframework.boot' version '2.1.3.RELEASE'
-
-    // https://docs.spring.io/dependency-management-plugin/docs/current-SNAPSHOT/reference/html/
-    id 'io.spring.dependency-management' version '1.0.7.RELEASE'
-    
     // https://flywaydb.org/getstarted/firststeps/gradle
     // https://flywaydb.org/documentation/gradle/
     id 'org.flywaydb.flyway' version '5.2.4'
-
-    // https://plugins.gradle.org/plugin/com.github.spotbugs
-    // https://spotbugs.readthedocs.io/en/stable/gradle.html
-    // https://remal.gitlab.io/gradle-plugins/
-    id 'com.github.spotbugs' version '1.6.10'
 }
 
 // https://flywaydb.org/documentation/gradle/
@@ -53,111 +41,162 @@ flyway {
     user = 'root'
     password = 'root'
     schemas = ['springboot_swagger']
-    locations = ['filesystem:./src/main/resources/db/schema',
-                 'filesystem:./src/main/resources/db/functions']
+    locations = ['filesystem:config/db/schema',
+                 'filesystem:config/db/functions']
 }
 
-// had issues because of having xml libs under endorsed structure
-// https://docs.oracle.com/javase/8/docs/technotes/guides/standards/
-// https://github.com/checkstyle/contribution/tree/master/xsl
-// https://docs.gradle.org/current/userguide/checkstyle_plugin.html
-// https://stackoverflow.com/questions/32772872/how-can-i-disable-checkstyle-rules-for-tests-in-gradle
-tasks.withType(Checkstyle) {
-    ignoreFailures = false
-    configFile = file("config/checkstyle/checkstyle.xml")
-    checkstyleTest.enabled = false
-    reports {
-        xml.enabled false
-        html.enabled true
+allprojects {
+    group = 'org.tec'
+    version = '0.0.1-SNAPSHOT'
+
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'io.spring.dependency-management'
+
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+
+    dependencies {
+        // datasource deps
+        compile group: 'com.zaxxer', name: 'HikariCP', version: '3.3.0'
+        compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
     }
 }
 
-// https://docs.gradle.org/current/dsl/org.gradle.testing.jacoco.tasks.JacocoReport.html
-// https://reflectoring.io/jacoco/
-tasks.withType(JacocoReport) {
-    reports {
-        html.enabled true
-        xml.enabled false
-        csv.enabled false
-//        html.destination file("${buildDir}/jacocoHtml")
+subprojects {
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
-}
 
-// https://stackoverflow.com/questions/17237115/pmd-gradle-plugin-remove-pmdtest-upon-gradle-check
-pmd.sourceSets = [sourceSets.main]
+    // https://docs.gradle.org/current/userguide/checkstyle_plugin.html
+    // http://checkstyle.sourceforge.net/
+    apply plugin: 'checkstyle'
 
-// https://github.com/spotbugs/spotbugs-gradle-plugin/issues/32
-// https://spotbugs.readthedocs.io/en/latest/gradle.html
-// https://spotbugs.readthedocs.io/en/latest/gradle.html#configure-gradle-plugin
-tasks.withType(com.github.spotbugs.SpotBugsTask) {
-    ignoreFailures = false
-    spotbugsTest.enabled = false
+    // https://pmd.github.io/
+    // https://docs.gradle.org/current/userguide/pmd_plugin.html
+    apply plugin: 'pmd'
+
+    // https://www.jacoco.org/jacoco/
+    // https://docs.gradle.org/current/userguide/jacoco_plugin.html
+    apply plugin: 'jacoco'
+
+    // https://plugins.gradle.org/plugin/com.github.spotbugs
+    // https://spotbugs.readthedocs.io/en/stable/gradle.html
+    // https://remal.gitlab.io/gradle-plugins/
+    apply plugin: 'com.github.spotbugs'
+
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
     
-    reports {
-        xml.enabled = false
-        html.enabled = true
+    // had issues because of having xml libs under endorsed structure
+    // https://docs.oracle.com/javase/8/docs/technotes/guides/standards/
+    // https://github.com/checkstyle/contribution/tree/master/xsl
+    // https://docs.gradle.org/current/userguide/checkstyle_plugin.html
+    // https://stackoverflow.com/questions/32772872/how-can-i-disable-checkstyle-rules-for-tests-in-gradle
+    tasks.withType(Checkstyle) {
+        ignoreFailures = false
+        configFile = file("${projectDir}/../config/checkstyle/checkstyle.xml")
+        checkstyleTest.enabled = false
+        reports {
+            xml.enabled false
+            html.enabled true
+        }
     }
-}
 
-group = 'org.tec'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+    // https://docs.gradle.org/current/dsl/org.gradle.testing.jacoco.tasks.JacocoReport.html
+    // https://reflectoring.io/jacoco/
+    tasks.withType(JacocoReport) {
+        reports {
+            html.enabled true
+            xml.enabled false
+            csv.enabled false
+        }
+    }
 
-repositories {
-    mavenCentral()
-}
+    // https://stackoverflow.com/questions/17237115/pmd-gradle-plugin-remove-pmdtest-upon-gradle-check
+    pmd.sourceSets = [sourceSets.main]
 
-dependencies {
+    // https://github.com/spotbugs/spotbugs-gradle-plugin/issues/32
+    // https://spotbugs.readthedocs.io/en/latest/gradle.html
+    // https://spotbugs.readthedocs.io/en/latest/gradle.html#configure-gradle-plugin
+    tasks.withType(com.github.spotbugs.SpotBugsTask) {
+        ignoreFailures = false
+        spotbugsTest.enabled = false
+
+        reports {
+            xml.enabled = false
+            html.enabled = true
+        }
+    }
+
     ext {
-        lombokVersion = '1.18.4'
+        SLF4J_VERSION = '1.7.10'
+        SPRING_BOOT_VERSION='2.1.3.RELEASE'
+        SPRING_BOOT_ADMIN_VERSION='2.1.3'
+        LOMBOK_VERSION = '1.18.4'
     }
-    
-    //spring boot configs
-    implementation ('org.springframework.boot:spring-boot-starter-web')
-    testImplementation ('org.springframework.boot:spring-boot-starter-test')
 
-    //https://github.com/rzwitserloot/lombok/issues/1945
-    annotationProcessor("org.projectlombok:lombok:$lombokVersion")
-    
-    // actuator for spring boot admin
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: "$SPRING_BOOT_VERSION"
+    dependencyManagement {
+        imports {
+            mavenBom 'io.spring.platform:platform-bom:Cairo-RELEASE'
+        }
+    }
 
-    // security modules
-    // https://stackoverflow.com/questions/37285016/what-is-username-and-password-when-starting-spring-boot-with-tomcat
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: "$SPRING_BOOT_VERSION"
+    dependencies {
+        //https://github.com/rzwitserloot/lombok/issues/1945
+        annotationProcessor("org.projectlombok:lombok:$LOMBOK_VERSION")
 
-    // swagger integration  
-    // https://piotrminkowski.wordpress.com/2018/02/19/versioning-rest-api-with-spring-boot-and-swagger/   
-    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
-    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
-    compile group: 'io.springfox', name: 'springfox-spring-web', version: '2.9.2'
+        // actuator for spring boot admin
+        compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: "$SPRING_BOOT_VERSION"
 
-    // datasource deps 
-    compile group: 'com.zaxxer', name: 'HikariCP', version: '3.3.0'
-    compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: "$SPRING_BOOT_VERSION"
+        // security modules
+        // https://stackoverflow.com/questions/37285016/what-is-username-and-password-when-starting-spring-boot-with-tomcat
+        compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: "$SPRING_BOOT_VERSION"
 
-    // logging https://www.baeldung.com/spring-boot-logging
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: "$SPRING_BOOT_VERSION"
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
+        // datasource deps
+        compile group: 'com.zaxxer', name: 'HikariCP', version: '3.3.0'
+        compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
 
-    // utility libs
-    // https://www.baeldung.com/entity-to-and-from-dto-for-a-java-spring-application
-    compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'
+        // logging https://www.baeldung.com/spring-boot-logging
+        // logging
+        //compile "org.slf4j:slf4j-api:${SLF4J_VERSION}"
+        //compile "org.slf4j:slf4j-log4j12:${SLF4J_VERSION}"
+        compile group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: "$SPRING_BOOT_VERSION"
+        compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
 
-    //build utilities
-    // https://stackoverflow.com/questions/17729384/lombok-added-but-getters-and-setters-not-recognized-in-intellij-idea
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: "$lombokVersion"
+        // utility libs
+        // https://www.baeldung.com/entity-to-and-from-dto-for-a-java-spring-application
+        compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'
 
-    // https://www.slf4j.org/codes.html#StaticLoggerBinder
-    testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.26'
+        //build utilities
+        // https://stackoverflow.com/questions/17729384/lombok-added-but-getters-and-setters-not-recognized-in-intellij-idea
+        compileOnly group: 'org.projectlombok', name: 'lombok', version: "$LOMBOK_VERSION"
 
-    configurations {
-        compile {
-            //https://www.baeldung.com/spring-boot-logging
-            exclude group: 'org.springframework.boot',  module: 'spring-boot-starter-logging'
-            //https://stackoverflow.com/questions/51483775/debug-logging-causes-stackoverflowerror-in-spring-boot-2-0-3-release
-            exclude group: 'org.slf4j' , module: 'jul-to-slf4j'
+        // https://www.slf4j.org/codes.html#StaticLoggerBinder
+        testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.26'
+
+        // TODO get junit 5 working
+        //testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.4.0'
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+        testCompile group: 'org.springframework', name: 'spring-test', version: '5.1.5.RELEASE'
+        testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: "$SPRING_BOOT_VERSION"
+
+        configurations {
+            compile {
+                //https://www.baeldung.com/spring-boot-logging
+                exclude group: 'org.springframework.boot',  module: 'spring-boot-starter-logging'
+                //https://stackoverflow.com/questions/51483775/debug-logging-causes-stackoverflowerror-in-spring-boot-2-0-3-release
+                exclude group: 'org.slf4j' , module: 'jul-to-slf4j'
+            }
         }
     }
 }
@@ -170,17 +209,4 @@ dependencies {
 task 'db.reset' {
     description 'task to drop and reload the DB'
     dependsOn flywayClean,flywayMigrate
-}
-
-task 'test.cover' {
-    description 'run test and coverage reports'
-    dependsOn check,jacocoTestReport
-}
-
-/**
- * add db reset to test 
- * https://discuss.gradle.org/t/adding-a-dependson-to-an-existing-task/6463
- */
-test{
-    dependsOn 'db.reset'
 }

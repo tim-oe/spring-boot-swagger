@@ -1,1 +1,4 @@
-rootProject.name = 'springboot-swagger'
+rootProject.name = 'springboot'
+
+include ':app'
+include ':admin'
