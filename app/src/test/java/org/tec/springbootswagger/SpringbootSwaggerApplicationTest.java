@@ -1,16 +1,17 @@
 package org.tec.springbootswagger;
 
 import com.zaxxer.hikari.HikariDataSource;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.sql.DataSource;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes=SpringbootSwaggerApplication.class)
 public class SpringbootSwaggerApplicationTest {
 
@@ -18,9 +19,10 @@ public class SpringbootSwaggerApplicationTest {
     private DataSource dataSource;
 
     @Test
+    @DisplayName("simple test to verify data source")
     public void hikariConnectionPoolIsConfigured() {
-        Assert.assertNotNull("datasource not available", dataSource);
-        Assert.assertEquals("datasource is not HikariCP " + dataSource.getClass().getName(), HikariDataSource.class.getName(), dataSource.getClass().getName());
+        Assertions.assertNotNull(dataSource, "datasource not available");
+        Assertions.assertEquals(HikariDataSource.class.getName(), dataSource.getClass().getName(), "datasource is not HikariCP " + dataSource.getClass().getName());
     }
 
     @Test

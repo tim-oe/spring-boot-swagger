@@ -1,18 +1,19 @@
 package org.tec.springbootswagger.service.impl;
 
 import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.tec.springbootswagger.SpringbootSwaggerApplication;
 import org.tec.springbootswagger.model.dto.PersonDto;
 import org.tec.springbootswagger.service.PersonSvc;
 
 import javax.transaction.Transactional;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes= SpringbootSwaggerApplication.class)
 public class PersonSvcTest {
 
@@ -29,7 +30,7 @@ public class PersonSvcTest {
 
         PersonDto actual = personSvc.create(expected);
 
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
 
         expected.setId(actual.getId());
         expected.setFirstName("retest");
@@ -37,7 +38,7 @@ public class PersonSvcTest {
 
         actual = personSvc.update(expected);
 
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -50,7 +51,7 @@ public class PersonSvcTest {
 
         PersonDto actual = personSvc.create(expected);
 
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
 
         expected.setId(actual.getId());
         expected.setFirstName("retest");
@@ -59,8 +60,8 @@ public class PersonSvcTest {
 
         actual = personSvc.getPerson(expected.getEmail());
 
-        Assert.assertNotNull(actual);
-        Assert.assertEquals(expected, actual);
+        Assertions.assertNotNull(actual);
+        Assertions.assertEquals(expected, actual);
 
         expected.setLastName("metoo");
 
@@ -68,8 +69,8 @@ public class PersonSvcTest {
 
         actual = personSvc.getPerson(expected.getEmail());
 
-        Assert.assertNotNull(actual);
-        Assert.assertEquals(expected, actual);
+        Assertions.assertNotNull(actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
@@ -82,9 +83,9 @@ public class PersonSvcTest {
 
         PersonDto actual = personSvc.create(expected);
 
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
 
-        Assert.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
 
         expected.setId(actual.getId());
 
@@ -92,6 +93,6 @@ public class PersonSvcTest {
 
         actual = personSvc.getPerson(expected.getEmail());
 
-        Assert.assertNull(actual);
+        Assertions.assertNull(actual);
     }
 }
