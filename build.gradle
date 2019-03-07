@@ -180,7 +180,9 @@ subprojects {
 
     dependencies {
         //https://github.com/rzwitserloot/lombok/issues/1945
-        annotationProcessor("org.projectlombok:lombok:$LOMBOK_VERSION")
+        annotationProcessor 'org.projectlombok:lombok'
+
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
         // actuator for spring boot admin
         compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: "$SPRING_BOOT_VERSION"

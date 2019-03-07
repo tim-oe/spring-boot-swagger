@@ -1,0 +1,5 @@
+# https://help.github.com/en/articles/search-engine-optimization-for-github-pages
+# https://jekyllrb.com/docs/plugins/
+# https://github.com/jekyll/example/blob/gh-pages/_config.yml
+plugins:
+  - jekyll-seo-tag
