@@ -26,4 +26,5 @@ public class SpringbootSwaggerApplication {
     //https://www.baeldung.com/entity-to-and-from-dto-for-a-java-spring-application
     public ModelMapper modelMapper() {
         return new ModelMapper();
-    }}
+    }
+}

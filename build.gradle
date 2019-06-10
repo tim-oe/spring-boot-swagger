@@ -32,21 +32,8 @@ plugins {
     id 'java'
     id 'idea'
     id "io.spring.dependency-management" version "1.0.7.RELEASE"
-
-    // https://flywaydb.org/getstarted/firststeps/gradle
-    // https://flywaydb.org/documentation/gradle/
-    id 'org.flywaydb.flyway' version '5.2.4'
 }
 
-// https://flywaydb.org/documentation/gradle/
-flyway {
-    url = 'jdbc:mariadb://localhost'
-    user = 'root'
-    password = 'root'
-    schemas = ['springboot_swagger']
-    locations = ['filesystem:config/db/schema',
-                 'filesystem:config/db/functions']
-}
 
 allprojects {
     group = 'org.tec'
@@ -240,14 +227,4 @@ subprojects {
         }
         reports.html.enabled = true
     }
-}
-
-/**
- * task to drop and reload the DB
- * https://docs.gradle.org/current/userguide/tutorial_using_tasks.html
- * need to quote the name to leverage dot notation
- */
-task 'db.reset' {
-    description 'task to drop and reload the DB'
-    dependsOn flywayClean,flywayMigrate
 }
