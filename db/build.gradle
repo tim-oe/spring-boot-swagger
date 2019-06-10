@@ -1,0 +1,57 @@
+plugins {
+    id 'org.flywaydb.flyway' version '5.2.4'
+}
+
+group 'org.tec'
+version '0.0.1-SNAPSHOT'
+
+configurations {
+    db
+}
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
+
+    //to get ant.sql working
+    db group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
+}
+
+// https://flywaydb.org/getstarted/firststeps/gradle
+// https://flywaydb.org/documentation/gradle/
+flyway {
+    url = "jdbc:mariadb://${db_host}:${db_port}/"
+    user = "${db_username}"
+    password = "${db_password}"
+    schemas = ["${db_name}"]
+    locations = ["filesystem:$rootProject.projectDir/db/src/main/sql/schema",
+                 "filesystem:$rootProject.projectDir/db/src/main/sql/functions"]
+}
+
+/**
+ * task to drop and reload the DB
+ * https://docs.gradle.org/current/userguide/tutorial_using_tasks.html
+ * need to quote the name to leverage dot notation
+ */
+task db_reset {
+    description 'task to drop and reload the DB'
+    dependsOn flywayClean,flywayMigrate
+
+    doLast {
+        ant.sql(classpath: configurations.db.asPath,
+                driver: 'org.mariadb.jdbc.Driver',
+                url: "jdbc:mariadb://${db_host}:${db_port}/${db_name}",
+                userid: "${db_username}",
+                password: "${db_password}",
+                delimiter: ';;',
+                delimitertype: 'normal'
+        ) {
+            transaction {
+                fileset(dir: "$rootProject.projectDir/db/src/main/sql/data") {
+                    include(name: '*.sql')
+                }
+            }
+        }
+    }}
