@@ -10,7 +10,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * the encapsulation of the standard rest response
  */
-@XmlRootElement
 @Getter
 @Setter
 @NoArgsConstructor

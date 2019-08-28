@@ -72,7 +72,7 @@ subprojects {
 
     // https://docs.gradle.org/current/userguide/checkstyle_plugin.html
     // http://checkstyle.sourceforge.net/
-    apply plugin: 'checkstyle'
+//    apply plugin: 'checkstyle'
 
     // https://pmd.github.io/
     // https://docs.gradle.org/current/userguide/pmd_plugin.html
@@ -98,6 +98,7 @@ subprojects {
     // https://github.com/checkstyle/contribution/tree/master/xsl
     // https://docs.gradle.org/current/userguide/checkstyle_plugin.html
     // https://stackoverflow.com/questions/32772872/how-can-i-disable-checkstyle-rules-for-tests-in-gradle
+/*
     tasks.withType(Checkstyle) {
         ignoreFailures = false
         configFile = file("${projectDir}/../config/checkstyle/checkstyle.xml")
@@ -107,7 +108,7 @@ subprojects {
             html.enabled true
         }
     }
-
+*/
     // https://docs.gradle.org/current/dsl/org.gradle.testing.jacoco.tasks.JacocoReport.html
     // https://reflectoring.io/jacoco/
     tasks.withType(JacocoReport) {
@@ -166,36 +167,6 @@ subprojects {
     }
 
     dependencies {
-        //https://github.com/rzwitserloot/lombok/issues/1945
-        annotationProcessor 'org.projectlombok:lombok'
-
-        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-
-        // actuator for spring boot admin
-        compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: "$SPRING_BOOT_VERSION"
-
-        // security modules
-        // https://stackoverflow.com/questions/37285016/what-is-username-and-password-when-starting-spring-boot-with-tomcat
-        compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: "$SPRING_BOOT_VERSION"
-
-        // datasource deps
-        compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: "$SPRING_BOOT_VERSION"
-
-        // logging https://www.baeldung.com/spring-boot-logging
-        // logging
-        //compile "org.slf4j:slf4j-api:${SLF4J_VERSION}"
-        //compile "org.slf4j:slf4j-log4j12:${SLF4J_VERSION}"
-        compile group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: "$SPRING_BOOT_VERSION"
-        compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.1'
-
-        // utility libs
-        // https://www.baeldung.com/entity-to-and-from-dto-for-a-java-spring-application
-        compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'
-
-        //build utilities
-        // https://stackoverflow.com/questions/17729384/lombok-added-but-getters-and-setters-not-recognized-in-intellij-idea
-        compileOnly group: 'org.projectlombok', name: 'lombok', version: "$LOMBOK_VERSION"
-
         // https://www.slf4j.org/codes.html#StaticLoggerBinder
         testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.26'
 
@@ -204,7 +175,7 @@ subprojects {
         testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.2'
         testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.3.2'
         testCompile group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.3.2'
-        testRuntime group: 'com.kncept.junit.reporter', name: 'junit-reporter', version: '2.0.0'
+        testRuntime group: 'com.kncept.junit.reporter', name: 'junit-reporter', version: '2.0.1'
 
         testCompile group: 'org.springframework', name: 'spring-test', version: '5.1.5.RELEASE'
         testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: "$SPRING_BOOT_VERSION"
@@ -225,6 +196,6 @@ subprojects {
         testLogging {
             showStandardStreams = true
         }
-        reports.html.enabled = true
+        //reports.html.enabled = true
     }
 }

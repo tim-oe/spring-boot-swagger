@@ -7,7 +7,6 @@ import lombok.ToString;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
 @Getter
 @Setter
 @NoArgsConstructor

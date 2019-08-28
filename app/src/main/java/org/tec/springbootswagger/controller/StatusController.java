@@ -1,6 +1,7 @@
 package org.tec.springbootswagger.controller;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.MediaType;
 import org.tec.springbootswagger.entity.DatasourceInformationDba;
 import org.tec.springbootswagger.model.Response;
 import org.tec.springbootswagger.model.Status;
@@ -13,7 +14,8 @@ import javax.sql.DataSource;
 
 @Log4j2
 @RestController
-@RequestMapping("/status")
+// WARNING make sure to set produces json or it will try
+@RequestMapping(value = "/status", produces = MediaType.APPLICATION_JSON_VALUE)
 public class StatusController {
 
     @Autowired
