@@ -12,6 +12,10 @@ repositories {
     mavenCentral()
 }
 
+// https://discuss.gradle.org/t/skipping-a-systemtest-task-for-a-specific-submodule/13121
+processTestResources.enabled = false
+test.enabled = false
+
 dependencies {
     compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
 
