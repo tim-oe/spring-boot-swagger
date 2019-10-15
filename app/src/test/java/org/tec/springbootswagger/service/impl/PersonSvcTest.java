@@ -1,6 +1,5 @@
 package org.tec.springbootswagger.service.impl;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,10 +14,11 @@ import javax.transaction.Transactional;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes= SpringbootSwaggerApplication.class)
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class PersonSvcTest {
 
     @Autowired
-    PersonSvc personSvc;
+    private transient PersonSvc personSvc;
 
     @Test
     @Transactional
@@ -27,6 +27,7 @@ public class PersonSvcTest {
         expected.setEmail("test@example.net");
         expected.setFirstName("test");
         expected.setLastName("me");
+        expected.setHash("hash");
 
         PersonDto actual = personSvc.create(expected);
 
@@ -48,6 +49,7 @@ public class PersonSvcTest {
         expected.setEmail("test@example.net");
         expected.setFirstName("test");
         expected.setLastName("me");
+        expected.setHash("hash");
 
         PersonDto actual = personSvc.create(expected);
 
@@ -80,6 +82,7 @@ public class PersonSvcTest {
         expected.setEmail("test@example.net");
         expected.setFirstName("test");
         expected.setLastName("me");
+        expected.setHash("hash");
 
         PersonDto actual = personSvc.create(expected);
 

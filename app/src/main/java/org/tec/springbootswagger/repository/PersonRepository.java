@@ -3,16 +3,14 @@ package org.tec.springbootswagger.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.tec.springbootswagger.model.entity.PersonEntity;
-
-import java.util.Optional;
+import org.tec.springbootswagger.entity.PersonEntity;
 
 /**
  * jpa repo for person
  */
 public interface PersonRepository extends JpaRepository<PersonEntity, Long> {
 
-    Optional<PersonEntity> findByEmail(String email);
+    PersonEntity findByEmail(String email);
 
     //https://stackoverflow.com/questions/32258857/spring-boot-data-jpa-modifying-update-query-refresh-persistence-context
     @Modifying(flushAutomatically=true,clearAutomatically=true)

@@ -1,7 +1,9 @@
 .gradle
-/build/
-/logs/
+**/build/
+**/logs/
 !gradle/wrapper/gradle-wrapper.jar
+lombok.config
+version.properties
 
 ### STS ###
 .apt_generated

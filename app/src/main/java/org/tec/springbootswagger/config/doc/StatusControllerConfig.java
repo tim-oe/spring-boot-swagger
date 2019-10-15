@@ -17,7 +17,7 @@ public class StatusControllerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("status-api-1.0")
                 .select()
-                .apis(RequestHandlerSelectors.basePackage(StatusController.class.getPackage().getName()))
+                .apis(RequestHandlerSelectors.basePackage(StatusController.class.getName()))
                 .paths(regex("/status/v1.0"))
                 .build()
                 .apiInfo(new ApiInfoBuilder().version("1.0").title("Status API").description("Documentation Status API v1.0").build());

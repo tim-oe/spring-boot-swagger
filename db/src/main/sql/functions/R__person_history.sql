@@ -4,15 +4,16 @@ CREATE OR REPLACE DEFINER=`root`@`localhost` TRIGGER `person_after_insert` AFTER
     `person_id`,
     `email`,
     `first_name`,
-    `last_name`
+    `last_name`,
+    `pwd_hash`
     )
   VALUES (
     'I',  -- I For Insert.
     NEW.`id`,
     NEW.`email`,
     NEW.`first_name`,
-    NEW.`last_name`
-    );
+    NEW.`last_name`,
+    NEW.`pwd_hash`);
 ;
 
 CREATE OR REPLACE DEFINER=`root`@`localhost` TRIGGER `person_after_update` AFTER UPDATE ON person FOR EACH ROW
@@ -21,15 +22,16 @@ CREATE OR REPLACE DEFINER=`root`@`localhost` TRIGGER `person_after_update` AFTER
     `person_id`,
     `email`,
     `first_name`,
-    `last_name`
+    `last_name`,
+    `pwd_hash`
     )
   VALUES (
     'U',  -- U For Update
     NEW.`id`,
     NEW.`email`,
     NEW.`first_name`,
-    NEW.`last_name`
-    );
+    NEW.`last_name`,
+    NEW.`pwd_hash`);
 ;
 
 CREATE OR REPLACE DEFINER=`root`@`localhost` TRIGGER `person_after_delete` AFTER DELETE ON person FOR EACH ROW
@@ -38,13 +40,14 @@ CREATE OR REPLACE DEFINER=`root`@`localhost` TRIGGER `person_after_delete` AFTER
     `person_id`,
     `email`,
     `first_name`,
-    `last_name`
+    `last_name`,
+    `pwd_hash`
     )
   VALUES (
     'D',  -- D For delete
     OLD.`id`,
     OLD.`email`,
     OLD.`first_name`,
-    OLD.`last_name`
-    );
+    OLD.`last_name`,
+    OLD.`pwd_hash`);
 ;

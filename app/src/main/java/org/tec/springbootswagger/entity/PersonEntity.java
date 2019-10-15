@@ -1,4 +1,4 @@
-package org.tec.springbootswagger.model.entity;
+package org.tec.springbootswagger.entity;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -12,9 +12,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@ToString
 @Getter
 @Setter
+@ToString
 @EqualsAndHashCode
 @Entity
 @Table(name = "person")
@@ -33,4 +33,7 @@ public class PersonEntity {
 
     @Column(name = "email")
     private String email;
+
+    @Column(name = "pwd_hash")
+    private String hash;
 }

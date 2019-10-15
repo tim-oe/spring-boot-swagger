@@ -4,7 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tec.springbootswagger.model.dto.PersonDto;
-import org.tec.springbootswagger.model.entity.PersonEntity;
+import org.tec.springbootswagger.entity.PersonEntity;
 import org.tec.springbootswagger.repository.PersonRepository;
 import org.tec.springbootswagger.service.PersonSvc;
 
@@ -35,7 +35,7 @@ public class PersonSvcImpl implements PersonSvc {
 
     @Override
     public PersonDto getPerson(String email) {
-        PersonEntity pe = personRepository.findByEmail(email).orElse(null);
+        PersonEntity pe = personRepository.findByEmail(email);
         if(pe != null) {
             return modelMapper.map(pe, PersonDto.class);
         } else {

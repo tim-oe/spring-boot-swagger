@@ -1,22 +1,23 @@
 package org.tec.springbootswagger.repository;
 
 import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.tec.springbootswagger.SpringbootSwaggerApplication;
-import org.tec.springbootswagger.model.entity.PersonEntity;
+import org.tec.springbootswagger.entity.PersonEntity;
 
 import javax.transaction.Transactional;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(classes= SpringbootSwaggerApplication.class)
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class PersonRepositoryTest {
 
     @Autowired
-    PersonRepository personRepository;
+    private transient PersonRepository personRepository;
 
     @Test
     @Transactional
@@ -25,6 +26,7 @@ public class PersonRepositoryTest {
         expected.setEmail("test@example.net");
         expected.setFirstName("test");
         expected.setLastName("me");
+        expected.setHash("hash");
 
         PersonEntity actual = personRepository.save(expected);
 
@@ -46,6 +48,7 @@ public class PersonRepositoryTest {
         expected.setEmail("test@example.net");
         expected.setFirstName("test");
         expected.setLastName("me");
+        expected.setHash("hash");
 
         PersonEntity actual = personRepository.save(expected);
 
@@ -56,7 +59,7 @@ public class PersonRepositoryTest {
 
         personRepository.updateFirstName(expected.getFirstName(), expected.getId());
 
-        actual = personRepository.findByEmail(expected.getEmail()).get();
+        actual = personRepository.findByEmail(expected.getEmail());
 
         Assert.assertNotNull(actual);
         Assert.assertEquals(expected, actual);
@@ -65,7 +68,7 @@ public class PersonRepositoryTest {
 
         personRepository.updateLastName(expected.getLastName(), expected.getId());
 
-        actual = personRepository.findByEmail(expected.getEmail()).get();
+        actual = personRepository.findByEmail(expected.getEmail());
 
         Assert.assertNotNull(actual);
         Assert.assertEquals(expected, actual);
@@ -78,6 +81,7 @@ public class PersonRepositoryTest {
         expected.setEmail("test@example.net");
         expected.setFirstName("test");
         expected.setLastName("me");
+        expected.setHash("hash");
 
         PersonEntity actual = personRepository.save(expected);
 
@@ -87,7 +91,7 @@ public class PersonRepositoryTest {
 
         personRepository.delete(expected);
 
-        actual = personRepository.findByEmail(expected.getEmail()).orElse(null);
+        actual = personRepository.findByEmail(expected.getEmail());
 
         Assert.assertNull(actual);
     }
@@ -99,6 +103,7 @@ public class PersonRepositoryTest {
         expected.setEmail("test@example.net");
         expected.setFirstName("test");
         expected.setLastName("me");
+        expected.setHash("hash");
 
         PersonEntity actual = personRepository.save(expected);
 
@@ -108,7 +113,7 @@ public class PersonRepositoryTest {
 
         personRepository.deleteByEmail(expected.getEmail());
 
-        actual = personRepository.findByEmail(expected.getEmail()).orElse(null);
+        actual = personRepository.findByEmail(expected.getEmail());
 
         Assert.assertNull(actual);
     }

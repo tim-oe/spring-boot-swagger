@@ -16,7 +16,7 @@ import javax.sql.DataSource;
 public class SpringbootSwaggerApplicationTest {
 
     @Autowired
-    private DataSource dataSource;
+    private transient DataSource dataSource;
 
     @Test
     @DisplayName("simple test to verify data source")

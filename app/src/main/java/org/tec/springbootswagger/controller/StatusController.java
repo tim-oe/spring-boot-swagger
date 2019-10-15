@@ -1,22 +1,24 @@
 package org.tec.springbootswagger.controller;
 
-import lombok.extern.log4j.Log4j2;
-import org.springframework.http.MediaType;
-import org.tec.springbootswagger.entity.DatasourceInformationDba;
-import org.tec.springbootswagger.model.Response;
-import org.tec.springbootswagger.model.Status;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.tec.springbootswagger.dba.DatasourceInformationDba;
+import org.tec.springbootswagger.model.Response;
+import org.tec.springbootswagger.model.Status;
 
 import javax.sql.DataSource;
 
-@Log4j2
+@Slf4j
 @RestController
 // WARNING make sure to set produces json or it will try
-@RequestMapping(value = "/status", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = StatusController.PATH, produces = MediaType.APPLICATION_JSON_VALUE)
 public class StatusController {
+
+    public static final String PATH = "/status";
 
     @Autowired
     protected transient DataSource dataSource;
@@ -35,7 +37,7 @@ public class StatusController {
         stat.setDatasourceClass(dataSource.getClass().getName());
         stat.setDatabaseVersion(datasourceInformationDba.getVersion());
 
-        log.debug(resp);
+        log.debug(resp.toString());
 
         return  resp;
     }
@@ -51,7 +53,7 @@ public class StatusController {
         stat.setDatasourceClass(dataSource.getClass().getName());
         stat.setDatabaseVersion(datasourceInformationDba.getVersion());
 
-        log.debug(resp);
+        log.debug(resp.toString());
 
         return  resp;
     }
@@ -67,7 +69,7 @@ public class StatusController {
         stat.setDatasourceClass(dataSource.getClass().getName());
         stat.setDatabaseVersion(datasourceInformationDba.getVersion());
 
-        log.debug(resp);
+        log.debug(resp.toString());
 
         return  resp;
     }

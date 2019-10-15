@@ -1,6 +1,6 @@
-package org.tec.springbootswagger.entity.impl;
+package org.tec.springbootswagger.dba.impl;
 
-import org.tec.springbootswagger.entity.DatasourceInformationDba;
+import org.tec.springbootswagger.dba.DatasourceInformationDba;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;

@@ -1,4 +1,4 @@
-package org.tec.springbootswagger.entity;
+package org.tec.springbootswagger.dba;
 
 public interface DatasourceInformationDba {
 
