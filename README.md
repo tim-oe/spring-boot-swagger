@@ -24,3 +24,7 @@ TODOs :
 - [SEO this puppy](https://help.github.com/en/articles/search-engine-optimization-for-github-pages)
 
 I'm peppering the code with links extracted doing google recon to find examples/solutions.
+
+branching strategy is [gitflow](https://nvie.com/posts/a-successful-git-branching-model/)
+
+![gitflow](https://nvie.com/img/git-model@2x.png) 
