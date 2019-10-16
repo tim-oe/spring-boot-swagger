@@ -26,6 +26,12 @@ public interface PersonSvc {
     PersonDto getPerson(String email);
 
     /**
+     * get the current logged in user
+     * @return the current user
+     */
+    PersonDto getCurrentPerson();
+
+    /**
      * set a person's first name
      * @param id the identity of the person
      * @param firstName the first name to set

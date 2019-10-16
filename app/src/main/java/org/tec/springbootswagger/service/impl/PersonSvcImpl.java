@@ -2,12 +2,17 @@ package org.tec.springbootswagger.service.impl;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.tec.springbootswagger.model.dto.PersonDto;
 import org.tec.springbootswagger.entity.PersonEntity;
+import org.tec.springbootswagger.model.dto.PersonDto;
 import org.tec.springbootswagger.repository.PersonRepository;
 import org.tec.springbootswagger.service.PersonSvc;
 
+/**
+ * https://www.baeldung.com/get-user-in-spring-security
+ */
 @Service
 public class PersonSvcImpl implements PersonSvc {
 
@@ -41,6 +46,18 @@ public class PersonSvcImpl implements PersonSvc {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public PersonDto getCurrentPerson() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if(authentication != null) {
+            PersonEntity pe = personRepository.findByEmail(authentication.getName());
+            if(pe != null) {
+                return modelMapper.map(pe, PersonDto.class);
+            }
+        }
+        return null;
     }
 
     @Override

@@ -18,9 +18,9 @@ buildscript {
         // workaround for failing spotbugs with lint
         // https://github.com/spotbugs/spotbugs-gradle-plugin/issues/128
         classpath group: 'com.google.guava', name: 'guava', version: '28.1-jre'
-        classpath group: 'com.google.code.findbugs', name: 'annotations', version: '3.0.1'
-        classpath group: 'com.github.spotbugs', name: 'spotbugs-annotations', version: '3.1.12'
-        classpath group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+        //classpath group: 'com.google.code.findbugs', name: 'annotations', version: '3.0.1'
+        //classpath group: 'com.github.spotbugs', name: 'spotbugs-annotations', version: '3.1.12'
+        //classpath group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     }
 }
 
@@ -102,9 +102,9 @@ subprojects {
             url "https://plugins.gradle.org/m2/"
         }
         // https://docs.aws.amazon.com/redshift/latest/mgmt/configure-jdbc-connection-with-maven.html
-        maven {
-            url "http://redshift-maven-repository.s3-website-us-east-1.amazonaws.com/release"
-        }
+        //maven {
+        //    url "http://redshift-maven-repository.s3-website-us-east-1.amazonaws.com/release"
+        //}
     }
 
     sourceCompatibility = '1.11'
@@ -163,7 +163,7 @@ info.build.sourceType = ${rootProject.versioning.info.branchType}
         ignoreFailures = false
 
         reports {
-            //xml.enabled = false
+            xml.enabled = false
             html.enabled = true
         }
     }

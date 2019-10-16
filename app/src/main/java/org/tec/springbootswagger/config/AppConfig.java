@@ -18,7 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @EntityScan({"org.tec.springbootswagger.entity"})
 @EnableJpaRepositories({"org.tec.springbootswagger.repository"})
-@ComponentScan({"org.tec.springbootswagger.controller","org.tec.springbootswagger.dba","org.tec.springbootswagger.service"})
+@ComponentScan({"org.tec.springbootswagger.dba","org.tec.springbootswagger.service"})
 @EnableCaching
 @Configuration
 public class AppConfig {
