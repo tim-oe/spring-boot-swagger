@@ -14,6 +14,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.web.FilterChainProxy;
 import org.springframework.stereotype.Component;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -47,6 +48,13 @@ public class ControllerTestUtils {
     @Qualifier("objectMapper")
     protected transient ObjectMapper objectMapper;
 
+    @Autowired
+    private transient WebApplicationContext webApplicationContext;
+
+    @Autowired
+    private transient FilterChainProxy springSecurityFilterChain;
+
+
     /**
      * entry point for server-side Spring MVC test
      */
@@ -56,14 +64,16 @@ public class ControllerTestUtils {
      * Creates the `mockMvc` instance for the controller along with support
      * this should be called in the function annotated /w before
      *
-     * @param wac         the web application context
      * @param testClass   the test class instance should be "this"
      *                    <p>
      *                    for @ControllerAdvice classes.
      */
-    public void init(WebApplicationContext wac, Object testClass) {
+    public void init(Object testClass) {
         MockitoAnnotations.initMocks(testClass);
-        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+        mockMvc = MockMvcBuilders
+                .webAppContextSetup(webApplicationContext)
+                .addFilter(springSecurityFilterChain)
+                .build();
     }
 
     /**
@@ -232,6 +242,29 @@ public class ControllerTestUtils {
     }
 
     /**
+     * GET request.
+     *
+     * @param controllerPath The controller path to request.
+     * @param responseType   The type response returned
+     * @return the response object that is expected for the call
+     */
+    public <T> T get(String controllerPath, TypeReference<T> responseType) {
+        return method(HttpMethod.GET, controllerPath, null, null, null, null, null, responseType);
+    }
+
+    /**
+     * GET request.
+     *
+     * @param controllerPath The controller path to request.
+     * @param status         the response status
+     * @param responseType   The type response returned
+     * @return the response object that is expected for the call
+     */
+    public <T> T get(String controllerPath, HttpStatus status, TypeReference<T> responseType) {
+        return method(HttpMethod.GET, controllerPath, null, null, null, null, status, responseType);
+    }
+
+    /**
      * DELETE request.
      *
      * @param controllerPath The controller path to request.
@@ -253,6 +286,7 @@ public class ControllerTestUtils {
      * @param headers        the set of headers
      * @param content        The Request content
      * @param mediaType      The request type (application/json)
+     * @param status         the response status
      * @param responseType   The type response returned
      * @return the response object that is expected for the call
      */

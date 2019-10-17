@@ -6,6 +6,9 @@ leverage [spring rest template](https://spring.io/guides/gs/consuming-rest/)
 to pull [NOAA Weather data](https://www.weather.gov/documentation/services-web-api)
 and store it in [mongoDB](https://docs.spring.io/spring-data/mongodb/docs/1.2.0.RELEASE/reference/html/mongo.repositories.html)
 
+[NOAA data services API](https://www.ncei.noaa.gov/support/access-data-service-api-user-documentation)
+[Land Station locater](https://www.ncdc.noaa.gov/cdo-web/datatools/findstation)
+
 technologies used :
 
 - [spring boot](https://spring.io/projects/spring-boot)

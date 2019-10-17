@@ -5,12 +5,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.Properties;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
 public class Status {
-    String apiVersion;
-    String datasourceClass;
-    String databaseVersion;
+    String appName;
+    Properties versionInformation;
 }

@@ -31,6 +31,7 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
+                .authenticationProvider(authProvider)
                 .authorizeRequests()
                 .antMatchers(StatusController.PATH).permitAll()
                 .anyRequest().authenticated()

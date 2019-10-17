@@ -6,15 +6,14 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.tec.springbootswagger.dba.DatasourceInformationDba;
 import org.tec.springbootswagger.model.Response;
 import org.tec.springbootswagger.model.Status;
+import org.tec.springbootswagger.service.VersionScv;
 
 import javax.sql.DataSource;
 
 @Slf4j
 @RestController
-// WARNING make sure to set produces json or it will try
 @RequestMapping(value = StatusController.PATH, produces = MediaType.APPLICATION_JSON_VALUE)
 public class StatusController {
 
@@ -24,50 +23,16 @@ public class StatusController {
     protected transient DataSource dataSource;
 
     @Autowired
-    protected transient DatasourceInformationDba datasourceInformationDba;
+    protected transient VersionScv versionScv;
 
-    @GetMapping("/v1.0")
+    @GetMapping
     public Response<Status> statusv1() {
         Response<Status> resp = new Response();
 
         Status stat = new Status();
+        stat.setVersionInformation(versionScv.getVersionInformation());
+
         resp.setData(stat);
-
-        stat.setApiVersion("1.0");
-        stat.setDatasourceClass(dataSource.getClass().getName());
-        stat.setDatabaseVersion(datasourceInformationDba.getVersion());
-
-        log.debug(resp.toString());
-
-        return  resp;
-    }
-
-    @GetMapping("/v2.0")
-    public Response<Status> statusv2() {
-        Response<Status> resp = new Response();
-
-        Status stat = new Status();
-        resp.setData(stat);
-
-        stat.setApiVersion("2.0");
-        stat.setDatasourceClass(dataSource.getClass().getName());
-        stat.setDatabaseVersion(datasourceInformationDba.getVersion());
-
-        log.debug(resp.toString());
-
-        return  resp;
-    }
-
-    @GetMapping("/v3.0")
-    public Response<Status> statusv3() {
-        Response<Status> resp = new Response();
-
-        Status stat = new Status();
-        resp.setData(stat);
-
-        stat.setApiVersion("3.0");
-        stat.setDatasourceClass(dataSource.getClass().getName());
-        stat.setDatabaseVersion(datasourceInformationDba.getVersion());
 
         log.debug(resp.toString());
 

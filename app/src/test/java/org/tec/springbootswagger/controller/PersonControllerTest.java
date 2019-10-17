@@ -8,9 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.web.context.WebApplicationContext;
 import org.tec.springbootswagger.SpringbootSwaggerApplication;
 import org.tec.springbootswagger.entity.PersonEntity;
 import org.tec.springbootswagger.model.Response;
@@ -31,16 +30,12 @@ public class PersonControllerTest {
     @Autowired
     private transient ControllerTestUtils controllerTestUtils;
 
-    @Autowired
-    private transient WebApplicationContext wac;
-
     @BeforeEach
     public void setUp() {
-        controllerTestUtils.init(wac, this);
+        controllerTestUtils.init(this);
     }
 
     @Test
-    @WithMockUser(username = "user1@example.net")
     public void get() {
         PersonEntity pe = personRepository.findByEmail("user1@example.net");
         Assertions.assertNotNull(pe);
@@ -51,5 +46,12 @@ public class PersonControllerTest {
         Response<PersonDto> response = controllerTestUtils.get(PersonController.PATH, headers, new TypeReference<Response<PersonDto>>() {});
 
         Assertions.assertNotNull(response.getData());
+    }
+
+    @Test
+    public void unauth() {
+        Response<PersonDto> response = controllerTestUtils.get(PersonController.PATH, HttpStatus.UNAUTHORIZED, new TypeReference<Response<PersonDto>>() {});
+
+        Assertions.assertNull(response);
     }
 }
