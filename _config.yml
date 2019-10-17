@@ -1,6 +1,0 @@
-# https://help.github.com/en/articles/search-engine-optimization-for-github-pages
-# https://jekyllrb.com/docs/plugins/
-# https://github.com/jekyll/example
-# https://help.github.com/en/categories/github-pages-basics
-plugins:
-  - jekyll-seo-tag
