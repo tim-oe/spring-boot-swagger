@@ -9,8 +9,10 @@ import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+@ComponentScan({"org.tec.noaa.service"})
 public class NoaaApplication {
 
 	public static final String BEAN_TYPE_KEY = "@Type";

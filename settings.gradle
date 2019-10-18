@@ -1,7 +1,8 @@
 rootProject.name = 'springboot'
 
-include 'app'
-include 'admin'
-include 'db'
+//include 'app'
+//include 'admin'
+//include 'db'
+//include 'db'
 include 'noaa'
 

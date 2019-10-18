@@ -15,6 +15,7 @@ import java.io.InputStreamReader;
  * spring rest client debug interceptor that you get for free /w jersey...
  * for this to work in line you need to have the following set for the template
  * restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
+ * TODO move to common lib
  */
 @Slf4j
 public class TraceRequestInterceptor implements ClientHttpRequestInterceptor {
@@ -28,7 +29,7 @@ public class TraceRequestInterceptor implements ClientHttpRequestInterceptor {
     }
 
     private void traceRequest(HttpRequest request, byte[] body) throws IOException {
-        if(log.isTraceEnabled()) {
+        //if(log.isTraceEnabled()) {
             StringBuilder buff = new StringBuilder();
             buff.append("============================request begin==========================================\n");
             buff.append("URI          : {}" + request.getURI() + "\n");
@@ -37,12 +38,12 @@ public class TraceRequestInterceptor implements ClientHttpRequestInterceptor {
             buff.append("Headers      : {}" + request.getHeaders() + "\n");
             buff.append("Request body : {}" + new String(body, 0, (body.length > 10000 ? 10000 : body.length), "UTF-8") + "\n");
             buff.append("============================request end============================================" + "\n");
-            log.trace(buff.toString());
-        }
+            log.warn(buff.toString());
+        //}
     }
 
     private void traceResponse(ClientHttpResponse response) throws IOException {
-        if(log.isTraceEnabled()) {
+        //if(log.isTraceEnabled()) {
             StringBuilder buff = new StringBuilder();
             buff.append("============================response begin=========================================" + "\n");
             buff.append("Status code  : {}" + response.getStatusCode() + "\n");
@@ -63,7 +64,7 @@ public class TraceRequestInterceptor implements ClientHttpRequestInterceptor {
                 buff.append("Response body: {}" + inputStringBuilder.substring(0, (inputStringBuilder.length() > 10000 ? 10000 : inputStringBuilder.length())) + "\n");
             }
             buff.append("=======================response end================================================" + "\n");
-            log.trace(buff.toString());
-        }
+            log.warn(buff.toString());
+        //}
     }
 }

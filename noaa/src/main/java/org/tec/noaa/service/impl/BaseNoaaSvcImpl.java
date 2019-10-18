@@ -1,11 +1,12 @@
 package org.tec.noaa.service.impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -34,6 +35,7 @@ import java.util.Map;
  * https://www.ncdc.noaa.gov/cdo-web/webservices/v2
  * http://zetcode.com/springboot/environment/
  */
+@Slf4j
 public abstract class BaseNoaaSvcImpl {
 
     protected static final String TOKEN_ENV_KEY="NOAA_TOKEN";
@@ -46,12 +48,14 @@ public abstract class BaseNoaaSvcImpl {
     protected static final String OFFSET_PARAM_KEY="offset";
 
     @Autowired
-    private transient Environment env;
-
-    @Autowired
     @Qualifier("objectMapper")
     protected transient ObjectMapper objectMapper;
 
+    /**
+     * noaa token environment variable
+     * https://www.ncdc.noaa.gov/cdo-web/token
+     */
+    @Value("${NOAA_TOKEN}")
     private transient String token;
 
     /** spring reset client */
@@ -62,8 +66,6 @@ public abstract class BaseNoaaSvcImpl {
 
     @PostConstruct
     public void init() {
-        token = env.getProperty(TOKEN_ENV_KEY);
-
         //allow response to be read multiple times
         restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
 
@@ -134,6 +136,31 @@ public abstract class BaseNoaaSvcImpl {
     }
 
     /**
+     * get /w no params
+     * @param responseType the response type the server controller response object dev
+     *          See: https://stackoverflow.com/questions/23674046/get-list-of-json-objects-with-spring-resttemplate
+     *          Example: new ParameterizedTypeReference<ResponseMobile<Long>>() {}
+     *
+     * @return the response payload
+     */
+    protected <T> ResponseEntity<T> get(ParameterizedTypeReference<T> responseType) {
+        return  method(HttpMethod.GET, null, getHeaders(), null, responseType);
+    }
+
+    /**
+     * get /w no params
+     * @param params additional querstring parameters
+     * @param responseType the response type the server controller response object dev
+     *          See: https://stackoverflow.com/questions/23674046/get-list-of-json-objects-with-spring-resttemplate
+     *          Example: new ParameterizedTypeReference<ResponseMobile<Long>>() {}
+     *
+     * @return the response payload
+     */
+    protected <T> ResponseEntity<T> get(Map<String, String> params, ParameterizedTypeReference<T> responseType) {
+        return  method(HttpMethod.GET, params, getHeaders(), null, responseType);
+    }
+
+    /**
      * generic client call.
      * @param method  the http method for the call
      * @param params additional querstring parameters
@@ -176,7 +203,9 @@ public abstract class BaseNoaaSvcImpl {
             throw new RuntimeException("failed to process request " + builder.build().encode().toUri(), e);
         }
 
-        if(response.getStatusCode() == HttpStatus.OK) {
+        if(response.getStatusCode() == HttpStatus.NOT_FOUND) {
+            log.warn("resource not found " + builder.build().encode().toUri());
+        } else if(response.getStatusCode() != HttpStatus.OK) {
             throw new RuntimeException(response.getStatusCode() + " failed to process request " + builder.build().encode().toUri());
         }
 
