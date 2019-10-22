@@ -1,9 +1,8 @@
 package org.tec.noaa.service;
 
+import org.tec.noaa.model.request.DataParams;
 import org.tec.noaa.model.response.Data;
 import org.tec.noaa.model.response.Response;
-
-import java.time.LocalDate;
 
 /**
  * https://www.ncdc.noaa.gov/cdo-web/webservices/v2#data
@@ -11,9 +10,7 @@ import java.time.LocalDate;
 public interface NoaaDataSvc {
     /**
      * get Noaa data
-     * @param dataSetId the data set id for the data
-     * @param startDate the data start date
-     * @param enddDate  the data end date
+     * @param params the request params
      */
-    Response<Data> getData(String dataSetId, LocalDate startDate, LocalDate enddDate);
+    Response<Data> getData(DataParams params);
 }

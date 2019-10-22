@@ -1,18 +1,21 @@
 package org.tec.noaa.model.response;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.tec.noaa.rest.DataDateTimeDeserializer;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @ToString
 public class Data {
-    String date;
+    @JsonDeserialize(using=DataDateTimeDeserializer.class)
+    LocalDateTime date;
     String datatype;
     String station;
-    List<String> attributes;
+    String attributes;
     long value;
- }
+}

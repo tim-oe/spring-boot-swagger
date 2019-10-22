@@ -11,13 +11,12 @@ import org.tec.noaa.model.response.DataSet;
 import org.tec.noaa.model.response.Response;
 import org.tec.noaa.service.NoaaDataSetSvc;
 
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes= NoaaApplication.class)
 public class NoaaDataSetSvcTest {
 
     @Autowired
-    NoaaDataSetSvc noaaDataSetSvc;
+    protected transient NoaaDataSetSvc noaaDataSetSvc;
 
     @Test
     void getDataSets() {

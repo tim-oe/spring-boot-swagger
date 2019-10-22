@@ -194,6 +194,9 @@ public abstract class BaseNoaaSvcImpl {
         ResponseEntity<T> response = null;
 
         try {
+            //TODO better throttling
+            Thread.sleep(500);
+
             response = restTemplate.exchange(
                     builder.build().encode().toUri(),
                     method,

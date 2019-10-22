@@ -8,8 +8,6 @@ import org.tec.noaa.model.response.Data;
 import org.tec.noaa.model.response.Response;
 import org.tec.noaa.service.NoaaDataSvc;
 
-import java.time.LocalDate;
-
 @Service
 public class NoaaDataSvcImpl extends BaseNoaaSvcImpl implements NoaaDataSvc {
     private static final String END_POINT = "data";
@@ -20,12 +18,7 @@ public class NoaaDataSvcImpl extends BaseNoaaSvcImpl implements NoaaDataSvc {
     }
 
     @Override
-    public Response<Data> getData(String dataSetId, LocalDate startDate, LocalDate enddDate) {
-        DataParams params = new DataParams();
-        params.setDataSetId(dataSetId);
-        params.setStartDate(startDate);
-        params.setEndDate(enddDate);
-
+    public Response<Data> getData(DataParams params) {
         ResponseEntity<Response<Data>> response = get(params.getParams(), new ParameterizedTypeReference<Response<Data>>() {});
 
         return response.getBody();

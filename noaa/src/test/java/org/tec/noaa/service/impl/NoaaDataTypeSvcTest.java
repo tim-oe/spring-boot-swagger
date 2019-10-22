@@ -1,7 +1,6 @@
 package org.tec.noaa.service.impl;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +11,12 @@ import org.tec.noaa.model.response.DataType;
 import org.tec.noaa.model.response.Response;
 import org.tec.noaa.service.NoaaDataTypeSvc;
 
-@Disabled
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes= NoaaApplication.class)
 public class NoaaDataTypeSvcTest {
 
     @Autowired
-    NoaaDataTypeSvc noaaDataTypeSvc;
+    protected transient NoaaDataTypeSvc noaaDataTypeSvc;
 
     @Test
     public void test() {
