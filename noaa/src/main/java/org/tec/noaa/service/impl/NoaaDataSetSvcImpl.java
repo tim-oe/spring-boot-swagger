@@ -12,13 +12,13 @@ public class NoaaDataSetSvcImpl extends BaseNoaaSvcImpl implements NoaaDataSetSv
     private static final String END_POINT = "datasets";
 
     @Override
-    String getEndPoint() {
+    public String getEndPoint() {
         return END_POINT;
     }
 
     @Override
     public Response<DataSet>  getDataSets() {
-        ResponseEntity<Response<DataSet>> response = get(new ParameterizedTypeReference<Response<DataSet>>() {});
+        final ResponseEntity<Response<DataSet>> response = get(new ParameterizedTypeReference<Response<DataSet>>() {});
 
         return response.getBody();
     }

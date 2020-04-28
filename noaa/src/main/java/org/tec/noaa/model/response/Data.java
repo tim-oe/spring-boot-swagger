@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 @ToString
 public class Data {
     @JsonDeserialize(using=DataDateTimeDeserializer.class)
-    LocalDateTime date;
-    String datatype;
-    String station;
-    String attributes;
-    long value;
+    protected LocalDateTime date;
+    protected String datatype;
+    protected String station;
+    protected String attributes;
+    protected long value;
 }

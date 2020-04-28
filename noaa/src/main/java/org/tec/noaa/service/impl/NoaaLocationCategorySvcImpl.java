@@ -12,13 +12,13 @@ public class NoaaLocationCategorySvcImpl extends BaseNoaaSvcImpl implements Noaa
     private static final String END_POINT = "locationcategories";
 
     @Override
-    String getEndPoint() {
+    public String getEndPoint() {
         return END_POINT;
     }
 
     @Override
     public Response<LocationCategory> getLocationCategories() {
-        ResponseEntity<Response<LocationCategory>> response = get(new ParameterizedTypeReference<Response<LocationCategory>>() {});
+        final ResponseEntity<Response<LocationCategory>> response = get(new ParameterizedTypeReference<Response<LocationCategory>>() {});
 
 //        System.out.println(response.getBody());
         return response.getBody();

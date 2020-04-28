@@ -27,7 +27,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -62,14 +61,14 @@ public abstract class BaseNoaaSvcImpl {
     protected transient RestTemplate restTemplate = new RestTemplate();
 
     /** get the api end point */
-    abstract String getEndPoint();
+    public abstract String getEndPoint();
 
     @PostConstruct
     public void init() {
         //allow response to be read multiple times
         restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
 
-        MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
+        final MappingJackson2HttpMessageConverter messageConverter = new MappingJackson2HttpMessageConverter();
         messageConverter.setPrettyPrint(false);
         messageConverter.setObjectMapper(objectMapper);
 
@@ -77,7 +76,7 @@ public abstract class BaseNoaaSvcImpl {
         restTemplate.getMessageConverters().add(messageConverter);
 
         //be able to get dump for request and response but not as good as jersey
-        List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
+        final List<ClientHttpRequestInterceptor> interceptors = new ArrayList<>();
         interceptors.add(new TraceRequestInterceptor());
         restTemplate.setInterceptors(interceptors);
     }
@@ -97,7 +96,7 @@ public abstract class BaseNoaaSvcImpl {
      * @param additionalHeaderParams  custom header s
      * @return the default headers
      */
-    protected HttpHeaders getHeaders(Map<String, String> additionalHeaderParams) {
+    protected HttpHeaders getHeaders(final Map<String, String> additionalHeaderParams) {
         return  getHeaders(MediaType.APPLICATION_JSON, additionalHeaderParams);
     }
 
@@ -108,27 +107,26 @@ public abstract class BaseNoaaSvcImpl {
      * @param additionalHeaderParams  custom header s
      * @return the default headers
      */
-    protected HttpHeaders getHeaders(MediaType mediaType, Map<String, String> additionalHeaderParams) {
-        HttpHeaders headers = new HttpHeaders();
+    protected HttpHeaders getHeaders(final MediaType mediaType, final Map<String, String> additionalHeaderParams) {
+        final HttpHeaders headers = new HttpHeaders();
         headers.setContentType(mediaType);
 
         //not setting for multipart. Throws 406 if it gets set
         if(mediaType != MediaType.MULTIPART_FORM_DATA) {
-            List<MediaType> types = new ArrayList<>();
+            final List<MediaType> types = new ArrayList<>();
             types.add(mediaType);
             headers.setAccept(types);
         }
 
-        List<Charset> charsets = new ArrayList<>();
+        final List<Charset> charsets = new ArrayList<>();
         charsets.add(StandardCharsets.UTF_8);
         headers.setAcceptCharset(charsets);
 
         if(MapUtils.isNotEmpty(additionalHeaderParams)) {
-            for(Iterator<Map.Entry<String, String>> it = additionalHeaderParams.entrySet().iterator(); it.hasNext();) {
-                Map.Entry<String, String> entry = it.next();
+            for (final Map.Entry<String, String> entry : additionalHeaderParams.entrySet()) {
                 headers.set(entry.getKey(), entry.getValue());
             }
-        }
+         }
 
         headers.set(TOKEN_HEADER_KEY, token);
 
@@ -143,7 +141,7 @@ public abstract class BaseNoaaSvcImpl {
      *
      * @return the response payload
      */
-    protected <T> ResponseEntity<T> get(ParameterizedTypeReference<T> responseType) {
+    protected <T> ResponseEntity<T> get(final ParameterizedTypeReference<T> responseType) {
         return  method(HttpMethod.GET, null, getHeaders(), null, responseType);
     }
 
@@ -156,7 +154,7 @@ public abstract class BaseNoaaSvcImpl {
      *
      * @return the response payload
      */
-    protected <T> ResponseEntity<T> get(Map<String, String> params, ParameterizedTypeReference<T> responseType) {
+    protected <T> ResponseEntity<T> get(final Map<String, String> params, final ParameterizedTypeReference<T> responseType) {
         return  method(HttpMethod.GET, params, getHeaders(), null, responseType);
     }
 
@@ -173,23 +171,23 @@ public abstract class BaseNoaaSvcImpl {
      * @return the actual response object from the controller call
      */
     @SuppressWarnings({"PMD.DataflowAnomalyAnalysis", "false positives"})
-    protected <T> ResponseEntity<T> method(HttpMethod method,
-                                         @Nullable Map<String, String> params,
-                                         @Nullable HttpHeaders headers,
-                                         @Nullable String body,
-                                         ParameterizedTypeReference<T> responseType) {
-        UriComponentsBuilder builder = UriComponentsBuilder
+    protected <T> ResponseEntity<T> method(final HttpMethod method,
+                                         @Nullable final Map<String, String> params,
+                                         @Nullable final HttpHeaders headers,
+                                         @Nullable final String body,
+                                         final ParameterizedTypeReference<T> responseType) {
+        final UriComponentsBuilder builder = UriComponentsBuilder
                 .fromHttpUrl(BASE_URL + getEndPoint());
 
         if(params != null && !params.isEmpty()) {
-            for(Map.Entry<String, String> entry : params.entrySet()) {
+            for(final Map.Entry<String, String> entry : params.entrySet()) {
                 builder.queryParam(entry.getKey(), entry.getValue());
             }
         }
 
-        HttpEntity httpEntity = (body != null)
-                ? new HttpEntity(body, headers)
-                : new HttpEntity(headers);
+        final HttpEntity httpEntity = (body == null)
+                ? new HttpEntity(headers)
+                : new HttpEntity(body, headers);
 
         ResponseEntity<T> response = null;
 

@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+
+<ruleset name="All Java Rules"
+         xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0
+         https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+    <description>java rules</description>
+    <!--
+    aggregate standard rulesets
+    See https://github.com/pmd/pmd/blob/master/.travis/all-java.xml
+    to exclude and customize rules
+    See https://pmd.github.io/latest/pmd_userdocs_configuring_rules.html
+    -->
+    <rule ref="category/java/bestpractices.xml">
+        <exclude name="AbstractClassWithoutAbstractMethod"/>
+    </rule>
+    <rule ref="category/java/bestpractices.xml/GuardLogStatement">
+        <properties>
+            <property name="logLevels" value="debug,info," />
+            <property name="guardsMethods" value="isDebugEnabled,isInfoEnabled" />
+        </properties>
+    </rule>
+    <rule ref="category/java/codestyle.xml">
+        <exclude name="AtLeastOneConstructor"/>
+        <exclude name="UseUnderscoresInNumericLiterals"/>
+    </rule>
+    <!-- https://pmd.github.io/pmd-6.22.0/pmd_rules_java_codestyle.html#longvariable -->
+    <rule ref="category/java/codestyle.xml/LongVariable">
+        <properties>
+            <property name="minimum" value="32" />
+        </properties>
+    </rule>
+    <!-- https://pmd.github.io/pmd-6.22.0/pmd_rules_java_codestyle.html#shortvariable -->
+    <rule ref="category/java/codestyle.xml/ShortVariable">
+        <properties>
+            <property name="minimum" value="2" />
+        </properties>
+    </rule>
+    <!-- https://pmd.github.io/pmd-6.22.0/pmd_rules_java_codestyle.html#shortclassname -->
+    <rule ref="category/java/codestyle.xml/ShortClassName">
+        <properties>
+            <property name="minimum" value="3" />
+        </properties>
+    </rule>
+    <rule ref="category/java/design.xml">
+        <exclude name="LawOfDemeter"/>
+        <exclude name="AvoidCatchingGenericException"/>
+        <exclude name="AvoidThrowingRawExceptionTypes"/>
+        <exclude name="AvoidUncheckedExceptionsInSignatures"/>
+        <exclude name="SignatureDeclareThrowsException"/>
+        <!-- rule is bad... -->
+        <exclude name="LoosePackageCoupling"/>
+    </rule>
+    <rule ref="category/java/design.xml/CyclomaticComplexity">
+        <properties>
+            <property name="classReportLevel" value="80" />
+            <property name="methodReportLevel" value="15" />
+            <property name="cycloOptions" value="" />
+        </properties>
+    </rule>
+
+    <!-- rule ref="category/java/documentation.xml" / -->>
+    <rule ref="category/java/errorprone.xml">
+        <exclude name="DataflowAnomalyAnalysis"/>
+        <exclude name="NullAssignment"/>
+    </rule>
+    <rule ref="category/java/multithreading.xml"/>
+    <rule ref="category/java/performance.xml"/>
+    <rule ref="category/java/security.xml"/>
+</ruleset>

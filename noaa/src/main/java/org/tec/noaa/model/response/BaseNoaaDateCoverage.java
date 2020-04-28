@@ -9,10 +9,14 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public abstract class BaseNoaaDateCoverage extends BaseNoaa {
+public class BaseNoaaDateCoverage extends BaseNoaa {
     //@JsonSerialize(using = LocalDateToStringSerializer.class)
     //@JsonDeserialize(using = StringToLocalDateDeserializer.class)
     private LocalDate mindate;
     private LocalDate maxdate;
     private double datacoverage;
+
+    protected BaseNoaaDateCoverage() {
+        super();
+    }
 }

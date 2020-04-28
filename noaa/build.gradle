@@ -1,3 +1,6 @@
+//disable for test
+pmdTest.enabled=false
+spotbugsTest.enabled=false
 
 version = '0.0.1-SNAPSHOT'
 

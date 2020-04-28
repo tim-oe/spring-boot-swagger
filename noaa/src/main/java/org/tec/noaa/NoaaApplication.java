@@ -17,7 +17,7 @@ public class NoaaApplication {
 
 	public static final String BEAN_TYPE_KEY = "@Type";
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 		SpringApplication.run(NoaaApplication.class, args);
 	}
 
@@ -36,8 +36,8 @@ public class NoaaApplication {
 	 * @param typed whether the instance will check/type field
 	 * @return object mapper instance
 	 */
-	protected ObjectMapper getObjectMapper(boolean typed) {
-		ObjectMapper om = new ObjectMapper();
+	protected ObjectMapper getObjectMapper(final boolean typed) {
+		final ObjectMapper om = new ObjectMapper();
 
 		om.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 		om.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);

@@ -12,13 +12,13 @@ public class NoaaDataTypeSvcImpl extends BaseNoaaSvcImpl implements NoaaDataType
     private static final String END_POINT = "datatypes";
 
     @Override
-    String getEndPoint() {
+    public String getEndPoint() {
         return END_POINT;
     }
 
     @Override
     public Response<DataType> getDataTypes() {
-        ResponseEntity<Response<DataType>> response = get(new ParameterizedTypeReference<Response<DataType>>() {});
+        final ResponseEntity<Response<DataType>> response = get(new ParameterizedTypeReference<Response<DataType>>() {});
 
         return response.getBody();
 

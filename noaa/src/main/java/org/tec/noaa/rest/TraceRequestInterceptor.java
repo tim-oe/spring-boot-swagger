@@ -2,7 +2,7 @@ package org.tec.noaa.rest;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpRequest;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
@@ -18,53 +18,48 @@ import java.io.InputStreamReader;
  * TODO move to common lib
  */
 @Slf4j
+//not sure what the npe dereferance error is...
+@SuppressWarnings({"NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE","PMD.SystemPrintln"})
 public class TraceRequestInterceptor implements ClientHttpRequestInterceptor {
     
     @Override
-    public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
+    public ClientHttpResponse intercept(final HttpRequest request, final byte[] body, final ClientHttpRequestExecution execution) throws IOException {
         traceRequest(request, body);
-        ClientHttpResponse response = execution.execute(request, body);
+        final ClientHttpResponse response = execution.execute(request, body);
         traceResponse(response);
         return response;
     }
 
-    private void traceRequest(HttpRequest request, byte[] body) throws IOException {
-        //if(log.isTraceEnabled()) {
-            StringBuilder buff = new StringBuilder();
-            buff.append("============================request begin==========================================\n");
-            buff.append("URI          : {}" + request.getURI() + "\n");
-            buff.append("Method       : {}" + request.getMethod() + "\n");
-            buff.append("content type : {}" + request.getHeaders().getContentType() + "\n");
-            buff.append("Headers      : {}" + request.getHeaders() + "\n");
-            buff.append("Request body : {}" + new String(body, 0, (body.length > 10000 ? 10000 : body.length), "UTF-8") + "\n");
-            buff.append("============================request end============================================" + "\n");
-            log.warn(buff.toString());
-        //}
+    private void traceRequest(final HttpRequest request, final byte[] body) throws IOException {
+        System.out.println("============================request begin==========================================");
+        System.out.println("URI          : {}" + request.getURI());
+        System.out.println("Method       : {}" + request.getMethod());
+        System.out.println("content type : {}" + request.getHeaders().getContentType());
+        System.out.println("Headers      : {}" + request.getHeaders());
+        if(body != null && request.getHeaders() != null && request.getHeaders().getContentType() != null && request.getHeaders().getContentType().includes(MediaType.APPLICATION_JSON)) {
+            System.out.println("Request body : {}" + new String(body, "UTF-8"));
+        }
+        System.out.println("============================request end============================================");
     }
 
-    private void traceResponse(ClientHttpResponse response) throws IOException {
-        //if(log.isTraceEnabled()) {
-            StringBuilder buff = new StringBuilder();
-            buff.append("============================response begin=========================================" + "\n");
-            buff.append("Status code  : {}" + response.getStatusCode() + "\n");
-            buff.append("Status text  : {}" + response.getStatusText() + "\n");
+    private void traceResponse(final ClientHttpResponse response) throws IOException {
+        System.out.println("============================response begin=========================================");
+        System.out.println("Status code  : {}" + response.getStatusCode());
+        System.out.println("Status text  : {}" + response.getStatusText());
+        System.out.println("Headers      : {}" + response.getHeaders());
 
-            //don't dump of status code not ok
-            if (response.getStatusCode() == HttpStatus.OK) {
-                StringBuilder inputStringBuilder = new StringBuilder();
-                try(BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getBody(), "UTF-8"))) {
-                    String line = bufferedReader.readLine();
-                    while (line != null) {
-                        inputStringBuilder.append(line);
-                        inputStringBuilder.append('\n');
-                        line = bufferedReader.readLine();
-                    }
+        if(response.getHeaders() != null && response.getHeaders() != null && response.getHeaders().getContentType() != null && response.getHeaders().getContentType().includes(MediaType.APPLICATION_JSON)) {
+            final StringBuilder inputStringBuilder = new StringBuilder();
+            try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getBody(), "UTF-8"))) {
+                String line = bufferedReader.readLine();
+                while (line != null) {
+                    inputStringBuilder.append(line);
+                    inputStringBuilder.append('\n');
+                    line = bufferedReader.readLine();
                 }
-                buff.append("Headers      : {}" + response.getHeaders() + "\n");
-                buff.append("Response body: {}" + inputStringBuilder.substring(0, (inputStringBuilder.length() > 10000 ? 10000 : inputStringBuilder.length())) + "\n");
+                System.out.println("Response body: {}" + inputStringBuilder.toString());
             }
-            buff.append("=======================response end================================================" + "\n");
-            log.warn(buff.toString());
-        //}
+        }
+        System.out.println("=======================response end================================================");
     }
 }

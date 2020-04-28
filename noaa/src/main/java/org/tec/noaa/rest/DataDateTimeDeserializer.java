@@ -22,9 +22,8 @@ public class DataDateTimeDeserializer extends StdDeserializer<LocalDateTime> {
         super(LocalDateTime.class);
     }
 
-
     @Override
-    public LocalDateTime deserialize(JsonParser parser, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+    public LocalDateTime deserialize(final JsonParser parser, final DeserializationContext ctxt) throws IOException, JsonProcessingException {
         return LocalDateTime.parse(parser.getText(), FIELD_FORMATTER);
     }
 }

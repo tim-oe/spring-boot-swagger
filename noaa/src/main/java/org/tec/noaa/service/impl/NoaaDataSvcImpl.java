@@ -13,13 +13,13 @@ public class NoaaDataSvcImpl extends BaseNoaaSvcImpl implements NoaaDataSvc {
     private static final String END_POINT = "data";
 
     @Override
-    String getEndPoint() {
+    public String getEndPoint() {
         return END_POINT;
     }
 
     @Override
-    public Response<Data> getData(DataParams params) {
-        ResponseEntity<Response<Data>> response = get(params.getParams(), new ParameterizedTypeReference<Response<Data>>() {});
+    public Response<Data> getData(final DataParams params) {
+        final ResponseEntity<Response<Data>> response = get(params.getParams(), new ParameterizedTypeReference<Response<Data>>() {});
 
         return response.getBody();
     }

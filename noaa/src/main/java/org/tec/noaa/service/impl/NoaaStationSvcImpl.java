@@ -12,13 +12,13 @@ public class NoaaStationSvcImpl extends BaseNoaaSvcImpl implements NoaaStationSv
     private static final String END_POINT = "stations";
 
     @Override
-    String getEndPoint() {
+    public String getEndPoint() {
         return END_POINT;
     }
 
     @Override
     public Response<Station> getStations() {
-       ResponseEntity<Response<Station>> response = get(new ParameterizedTypeReference<Response<Station>>() {});
+       final ResponseEntity<Response<Station>> response = get(new ParameterizedTypeReference<Response<Station>>() {});
 
        return response.getBody();
     }

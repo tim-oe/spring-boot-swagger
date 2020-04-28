@@ -7,7 +7,11 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public abstract class BaseNoaa {
+public class BaseNoaa {
     private String id;
     private String name;
+
+    protected BaseNoaa() {
+        //default ctor
+    }
 }

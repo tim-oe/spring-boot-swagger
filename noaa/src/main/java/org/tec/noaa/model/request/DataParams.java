@@ -13,7 +13,7 @@ public class DataParams extends BaseParameters {
      * set data set id
      * @param dataSetId the dataset id
      */
-    public void setDataSetId(String dataSetId) {
+    public void setDataSetId(final String dataSetId) {
         params.put(DATA_SET_ID_KEY, dataSetId);
     }
 
@@ -21,7 +21,7 @@ public class DataParams extends BaseParameters {
      * set end date
      * @param endDate end date
      */
-    public void setEndDate(LocalDate endDate) {
+    public void setEndDate(final LocalDate endDate) {
         params.put(END_DATE_KEY, DateTimeFormatter.ISO_DATE.format(endDate));
     }
 
@@ -29,7 +29,7 @@ public class DataParams extends BaseParameters {
      * set start date
      * @param startDate start date
      */
-    public void setStartDate(LocalDate startDate) {
+    public void setStartDate(final LocalDate startDate) {
         params.put(START_DATE_KEY, DateTimeFormatter.ISO_DATE.format(startDate));
     }
 
@@ -37,7 +37,7 @@ public class DataParams extends BaseParameters {
      * set location id
      * @param locationId location id
      */
-    public void setLocationId(String locationId) {
+    public void setLocationId(final String locationId) {
         params.put(LOCATION_KEY, locationId);
     }
 }

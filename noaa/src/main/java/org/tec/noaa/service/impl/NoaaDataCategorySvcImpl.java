@@ -12,13 +12,13 @@ public class NoaaDataCategorySvcImpl extends BaseNoaaSvcImpl implements NoaaData
     private static final String END_POINT = "datacategories";
 
     @Override
-    String getEndPoint() {
+    public String getEndPoint() {
         return END_POINT;
     }
 
     @Override
     public Response<DataCategory> getDataCategories() {
-        ResponseEntity<Response<DataCategory>> response = get(new ParameterizedTypeReference<Response<DataCategory>>() {});
+        final ResponseEntity<Response<DataCategory>> response = get(new ParameterizedTypeReference<Response<DataCategory>>() {});
 
         return response.getBody();
     }

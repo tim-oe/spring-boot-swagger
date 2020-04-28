@@ -13,6 +13,6 @@ import java.util.List;
 @Setter
 @ToString
 public class Response<T> {
-    Metadata metadata;
-    List<T> results;
+    protected Metadata metadata;
+    protected List<T> results;
 }
