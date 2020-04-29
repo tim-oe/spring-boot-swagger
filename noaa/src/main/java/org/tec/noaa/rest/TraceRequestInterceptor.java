@@ -1,5 +1,6 @@
 package org.tec.noaa.rest;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.MediaType;
@@ -42,13 +43,14 @@ public class TraceRequestInterceptor implements ClientHttpRequestInterceptor {
         System.out.println("============================request end============================================");
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private void traceResponse(final ClientHttpResponse response) throws IOException {
         System.out.println("============================response begin=========================================");
         System.out.println("Status code  : {}" + response.getStatusCode());
         System.out.println("Status text  : {}" + response.getStatusText());
         System.out.println("Headers      : {}" + response.getHeaders());
 
-        if(response.getHeaders() != null && response.getHeaders() != null && response.getHeaders().getContentType() != null && response.getHeaders().getContentType().includes(MediaType.APPLICATION_JSON)) {
+        if(response.getHeaders() != null && response.getHeaders().getContentType() != null && response.getHeaders().getContentType().includes(MediaType.APPLICATION_JSON)) {
             final StringBuilder inputStringBuilder = new StringBuilder();
             try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(response.getBody(), "UTF-8"))) {
                 String line = bufferedReader.readLine();
