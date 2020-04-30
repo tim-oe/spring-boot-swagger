@@ -1,3 +1,9 @@
+-- maiadb 10.4
+-- CREATE USER toad IDENTIFIED BY 'toad';
+-- GRANT ALL PRIVILEGES ON *.* TO 'toad'@'%' WITH GRANT OPTION;
+-- FLUSH PRIVILEGES;
+-- select user,host from user;
+--
 -- insert people
 INSERT INTO person
 (email, first_name, last_name, pwd_hash)
@@ -10,3 +16,4 @@ VALUES ('user2@example.net', 'jane', 'smith', '+9IU1AZmqWC2aEojtVgjJfzYAW+rjlHMx
 INSERT INTO person
 (email, first_name, last_name, pwd_hash)
 VALUES ('user3@example.net', 'harry', 'jones', 'QuEjETFsZK+UpAxoW/MACBrq9qYCC5cw5WwWOkk7MwVCqFv3oYrBsfBxan5wfxHax85h+1+TAzX+2Y7VlipGEyoz5MMBtOpZ');;
+

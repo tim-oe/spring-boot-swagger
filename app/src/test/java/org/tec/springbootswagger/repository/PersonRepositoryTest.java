@@ -10,6 +10,7 @@ import org.tec.springbootswagger.SpringbootSwaggerApplication;
 import org.tec.springbootswagger.entity.PersonEntity;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes= SpringbootSwaggerApplication.class)
@@ -59,19 +60,19 @@ public class PersonRepositoryTest {
 
         personRepository.updateFirstName(expected.getFirstName(), expected.getId());
 
-        actual = personRepository.findByEmail(expected.getEmail());
+        Optional<PersonEntity> opt = personRepository.findByEmail(expected.getEmail());
 
-        Assert.assertNotNull(actual);
-        Assert.assertEquals(expected, actual);
+        Assert.assertTrue(opt.isPresent());
+        Assert.assertEquals(opt.get(), actual);
 
         expected.setLastName("metoo");
 
         personRepository.updateLastName(expected.getLastName(), expected.getId());
 
-        actual = personRepository.findByEmail(expected.getEmail());
+        opt = personRepository.findByEmail(expected.getEmail());
 
-        Assert.assertNotNull(actual);
-        Assert.assertEquals(expected, actual);
+        Assert.assertTrue(opt.isPresent());
+        Assert.assertEquals(opt.get(), actual);
     }
 
     @Test
@@ -91,9 +92,9 @@ public class PersonRepositoryTest {
 
         personRepository.delete(expected);
 
-        actual = personRepository.findByEmail(expected.getEmail());
+        Optional<PersonEntity> opt = personRepository.findByEmail(expected.getEmail());
 
-        Assert.assertNull(actual);
+        Assert.assertTrue(opt.isPresent());
     }
 
     @Test
@@ -113,8 +114,8 @@ public class PersonRepositoryTest {
 
         personRepository.deleteByEmail(expected.getEmail());
 
-        actual = personRepository.findByEmail(expected.getEmail());
+        Optional<PersonEntity> opt = personRepository.findByEmail(expected.getEmail());
 
-        Assert.assertNull(actual);
+        Assert.assertTrue(opt.isPresent());
     }
 }

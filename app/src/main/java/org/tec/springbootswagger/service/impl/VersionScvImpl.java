@@ -17,9 +17,9 @@ public class VersionScvImpl implements VersionScv {
     @Override
     public Properties getVersionInformation() {
         try(InputStream in = resourceFile.getInputStream()) {
-            Properties p = new Properties();
-            p.load(in);
-            return p;
+            final Properties props = new Properties();
+            props.load(in);
+            return props;
         } catch (Exception e) {
             throw new RuntimeException("failed to load version.properties", e);
         }

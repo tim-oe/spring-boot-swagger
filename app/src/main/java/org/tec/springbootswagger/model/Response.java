@@ -5,8 +5,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 /**
  * the encapsulation of the standard rest response
  */
@@ -23,13 +21,13 @@ public class Response<T>{
     protected boolean authorized = true;
 
     /** the response message if any */
-    protected String message = null;
+    protected String message;
 
     /**
      * data if any
      * Needs to be able to be marshalled to json
      */
-    protected T data = null;
+    protected T data;
 
     /**
      * get the response data
@@ -45,7 +43,7 @@ public class Response<T>{
      *
      * @param data set response data Needs to be able to be marshalled to json
      */
-    public void setData(T data) {
+    public void setData(final T data) {
         this.data = data;
     }
 }

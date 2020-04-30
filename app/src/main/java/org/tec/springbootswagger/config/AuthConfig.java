@@ -24,12 +24,12 @@ public class AuthConfig extends WebSecurityConfigurerAdapter {
     protected transient CustomAuthProvider authProvider;
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(final AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(authProvider);
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    protected void configure(final HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authenticationProvider(authProvider)
                 .authorizeRequests()

@@ -10,6 +10,8 @@ import org.tec.springbootswagger.model.dto.PersonDto;
 import org.tec.springbootswagger.repository.PersonRepository;
 import org.tec.springbootswagger.service.PersonSvc;
 
+import java.util.Optional;
+
 /**
  * https://www.baeldung.com/get-user-in-spring-security
  */
@@ -23,15 +25,14 @@ public class PersonSvcImpl implements PersonSvc {
     protected transient ModelMapper modelMapper;
 
     @Override
-    @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-    public PersonDto create(PersonDto person) {
+    public PersonDto create(final PersonDto person) {
         PersonEntity pe = modelMapper.map(person, PersonEntity.class);
         pe = personRepository.save(pe);
         return modelMapper.map(pe, PersonDto.class);
     }
 
     @Override
-    public PersonDto update(PersonDto person) {
+    public PersonDto update(final PersonDto person) {
         if(person.getId() <= 0) {
             throw new IllegalArgumentException("person doesn't have id set " + person);
         }
@@ -39,39 +40,36 @@ public class PersonSvcImpl implements PersonSvc {
     }
 
     @Override
-    public PersonDto getPerson(String email) {
-        PersonEntity pe = personRepository.findByEmail(email);
-        if(pe != null) {
-            return modelMapper.map(pe, PersonDto.class);
-        } else {
-            return null;
-        }
+    public PersonDto getPerson(final String email) {
+        final Optional<PersonEntity> pe = personRepository.findByEmail(email);
+        return pe.isPresent() ? modelMapper.map(pe.get(), PersonDto.class) : null;
     }
 
     @Override
     public PersonDto getCurrentPerson() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        PersonDto pt = null;
         if(authentication != null) {
-            PersonEntity pe = personRepository.findByEmail(authentication.getName());
-            if(pe != null) {
-                return modelMapper.map(pe, PersonDto.class);
+            final Optional<PersonEntity> pe = personRepository.findByEmail(authentication.getName());
+            if(pe.isPresent()) {
+                pt = modelMapper.map(pe.get(), PersonDto.class);
             }
         }
-        return null;
+        return pt;
     }
 
     @Override
-    public void setFirstname(long id, String firstName) {
+    public void setFirstname(final long id, final String firstName) {
         personRepository.updateFirstName(firstName, id);
     }
 
     @Override
-    public void setLastname(long id, String lastName) {
+    public void setLastname(final long id, final String lastName) {
         personRepository.updateLastName(lastName, id);
     }
 
     @Override
-    public void deletePerson(String email) {
+    public void deletePerson(final String email) {
         personRepository.deleteByEmail(email);
     }
 }

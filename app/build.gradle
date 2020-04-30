@@ -1,5 +1,6 @@
 version '1.0-SNAPSHOT'
 
+pmdTest.enabled=false
 bootJar {
     mainClassName = 'org.tec.springbootswagger.SpringbootSwaggerApplication'
 }
@@ -10,67 +11,67 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     // logging
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.28'
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.28'
 
     // datasource deps
-    compile group: 'com.zaxxer', name: 'HikariCP', version: '3.4.1'
-    compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
+    implementation group: 'com.zaxxer', name: 'HikariCP', version: '3.4.1'
+    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
 
     // mongo
-    compile group: 'org.mongodb', name: 'mongo-java-driver', version: '3.11.0'
-    compile group: 'org.springframework.data', name: 'spring-data-mongodb', version: '2.1.10.RELEASE'
+    implementation group: 'org.mongodb', name: 'mongo-java-driver', version: '3.11.0'
+    implementation group: 'org.springframework.data', name: 'spring-data-mongodb', version: '2.1.10.RELEASE'
 
     // spring boot stuff
     // https://docs.spring.io/spring-boot/docs/current/reference/html/
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: "$SPRING_BOOT_VERSION"
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "$SPRING_BOOT_VERSION"
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: "$SPRING_BOOT_VERSION"
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: "$SPRING_BOOT_VERSION"
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: "$SPRING_BOOT_VERSION"
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "$SPRING_BOOT_VERSION"
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: "$SPRING_BOOT_VERSION"
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: "$SPRING_BOOT_VERSION"
 
     // spring data stuff
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: "$SPRING_BOOT_VERSION"
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-cache', version: "$SPRING_BOOT_VERSION"
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: "$SPRING_BOOT_VERSION"
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: "$SPRING_BOOT_VERSION"
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-cache', version: "$SPRING_BOOT_VERSION"
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: "$SPRING_BOOT_VERSION"
 
     // swagger integration
     // https://piotrminkowski.wordpress.com/2018/02/19/versioning-rest-api-with-spring-boot-and-swagger/   
-    compile group: 'io.swagger', name: 'swagger-core', version: '1.5.22'
-    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
-    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
-    compile group: 'io.springfox', name: 'springfox-spring-web', version: '2.9.2'
+    implementation group: 'io.swagger', name: 'swagger-core', version: '1.5.22'
+    implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+    implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    implementation group: 'io.springfox', name: 'springfox-spring-web', version: '2.9.2'
 
     // utility libs
     // https://www.baeldung.com/entity-to-and-from-dto-for-a-java-spring-application
     // https://www.baeldung.com/spring-boot-jasypt
-    compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'
-    compile group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '2.1.2'
+    implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'
+    implementation group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '2.1.2'
 
     // TODO
     // https://www.ehcache.org/
     // https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-caching.html#boot-features-caching-provider-ehcache2
     // https://docs.spring.io/spring-boot/docs/current/reference/html/boot-features-caching.html
     // https://spring.io/guides/gs/caching/
-    // compile group: 'org.ehcache', name: 'ehcache', version: '3.8.1'
+    // implementation group: 'org.ehcache', name: 'ehcache', version: '3.8.1'
 
     //build utilities
     // https://stackoverflow.com/questions/17729384/lombok-added-but-getters-and-setters-not-recognized-in-intellij-idea
     compileOnly group: 'org.projectlombok', name: 'lombok', version: "$LOMBOK_VERSION"
 
     // admin client connector
-    compile group: 'de.codecentric', name: 'spring-boot-admin-starter-client', version: '2.1.3'
+    implementation group: 'de.codecentric', name: 'spring-boot-admin-starter-client', version: '2.1.3'
 
     // https://www.slf4j.org/codes.html#StaticLoggerBinder
-    testCompile group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.26'
+    testImplementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.7.26'
 
     // upgrade causes errors
     // https://stackoverflow.com/questions/53926264/nosuchmethoderror-org-junit-platform-commons-util-reflectionutils-trytoloadclas
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.2'
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.3.2'
-    testCompile group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.3.2'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.2'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.3.2'
+    testImplementation group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.3.2'
 
-    testCompile group: 'org.springframework', name: 'spring-test', version: '5.1.5.RELEASE'
-    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: "$SPRING_BOOT_VERSION"
-    testCompile group: 'org.springframework.security', name: 'spring-security-test', version: '5.2.0.RELEASE'
+    testImplementation group: 'org.springframework', name: 'spring-test', version: '5.1.5.RELEASE'
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: "$SPRING_BOOT_VERSION"
+    testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.2.0.RELEASE'
 
-    testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+    testImplementation group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
 }

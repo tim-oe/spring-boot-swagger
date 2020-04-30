@@ -27,9 +27,9 @@ public class StatusController {
 
     @GetMapping
     public Response<Status> statusv1() {
-        Response<Status> resp = new Response();
+        final Response<Status> resp = new Response();
 
-        Status stat = new Status();
+        final Status stat = new Status();
         stat.setVersionInformation(versionScv.getVersionInformation());
 
         resp.setData(stat);

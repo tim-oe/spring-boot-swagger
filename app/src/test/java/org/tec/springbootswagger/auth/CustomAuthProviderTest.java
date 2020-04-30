@@ -13,6 +13,8 @@ import org.tec.springbootswagger.SpringbootSwaggerApplication;
 import org.tec.springbootswagger.entity.PersonEntity;
 import org.tec.springbootswagger.repository.PersonRepository;
 
+import java.util.Optional;
+
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes= SpringbootSwaggerApplication.class)
 public class CustomAuthProviderTest {
@@ -26,12 +28,12 @@ public class CustomAuthProviderTest {
     @Test
     public void test() {
         for(int cnt = 1; cnt < 4; cnt++) {
-            PersonEntity pe = personRepository.findByEmail("user" + cnt + "@example.net");
-            Assertions.assertNotNull(pe);
+            Optional<PersonEntity> pe = personRepository.findByEmail("user" + cnt + "@example.net");
+            Assertions.assertTrue(pe.isPresent());
 
             Authentication expected = Mockito.mock(Authentication.class);
 
-            BDDMockito.given(expected.getName()).willReturn(pe.getEmail());
+            BDDMockito.given(expected.getName()).willReturn(pe.get().getEmail());
             BDDMockito.given(expected.getCredentials()).willReturn("user" + cnt);
 
             Authentication actual = customAuthProvider.authenticate(expected);

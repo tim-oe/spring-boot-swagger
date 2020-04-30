@@ -46,8 +46,8 @@ public class AppConfig {
      * @param typed whether the instance will check/type field
      * @return object mapper instance
      */
-    protected ObjectMapper getObjectMapper(boolean typed) {
-        ObjectMapper om = new ObjectMapper();
+    protected ObjectMapper getObjectMapper(final boolean typed) {
+        final ObjectMapper om = new ObjectMapper();
 
         om.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         om.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);

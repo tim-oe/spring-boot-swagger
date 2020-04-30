@@ -22,7 +22,7 @@ public class PersonController {
 
     @GetMapping
     public Response<PersonDto> get() {
-        Response<PersonDto> resp = new Response();
+        final Response<PersonDto> resp = new Response();
 
         resp.setData(personSvc.getCurrentPerson());
 

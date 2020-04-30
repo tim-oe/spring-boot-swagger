@@ -22,8 +22,8 @@ public class WebConfig implements WebMvcConfigurer {
     protected transient ObjectMapper objectMapper;
 
     @Override
-    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
+    public void configureMessageConverters(final List<HttpMessageConverter<?>> converters) {
+        final MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
         converter.setObjectMapper(objectMapper);
         converters.add(converter);
     }

@@ -77,6 +77,7 @@ repositories {
 
 bootJar.enabled = false
 gradleLint.alwaysRun = true
+pmdTest.enabled = false
 
 subprojects {
     group 'org.tec'
@@ -171,7 +172,10 @@ info.build.sourceType = ${rootProject.versioning.info.branchType}
     // https://junit.org/junit5/docs/current/user-guide/
     // https://medium.com/@jonashavers/how-to-use-junit-5-with-gradle-fb7c5c3286cc
     test {
-        useJUnitPlatform()
+        useJUnitPlatform{
+            excludeTags 'server'
+        }
+
         testLogging.showStandardStreams = true
         testLogging.showStackTraces = true
 
@@ -205,15 +209,8 @@ info.build.sourceType = ${rootProject.versioning.info.branchType}
         ruleSetFiles = files("${rootDir}/config/pmd/ruleset.xml")
     }
 
-    test {
-        finalizedBy jacocoTestReport
-    }
-
     dependencies {
-        // TODO move to spotBugs
-        compile group: 'com.google.code.findbugs', name: 'annotations', version: '3.0.1'
-        compile group: 'com.github.spotbugs', name: 'spotbugs-annotations', version: '3.1.12'
-
-        testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+        compileOnly  group: 'com.github.spotbugs', name: 'spotbugs-annotations', version: '3.1.12'
+        compileOnly  group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
     }
 }

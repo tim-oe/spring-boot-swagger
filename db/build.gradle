@@ -1,5 +1,6 @@
+
 plugins {
-    id 'org.flywaydb.flyway' version '5.2.4'
+    id 'org.flywaydb.flyway' version '6.4.0'
 }
 
 version '0.0.1-SNAPSHOT'
@@ -9,22 +10,21 @@ configurations {
 }
 
 // https://discuss.gradle.org/t/skipping-a-systemtest-task-for-a-specific-submodule/13121
-processTestResources.enabled = false
-testClasses.enabled = false
-test.enabled = false
-spotbugsMain.enabled = false
-spotbugsTest.enabled = false
-pmdTest.enabled = false
-compileJava.enabled = false
-compileTestJava.enabled = false
-processResources.enabled = false
-jar.enabled = false
-bootJar.enabled = false
-assemble.enabled = false
-generateVersionInfo.enabled = false
+//processTestResources.enabled = false
+//testClasses.enabled = false
+//test.enabled = false
+//spotbugsMain.enabled = false
+//spotbugsTest.enabled = false
+//pmdTest.enabled = false
+//compileTestJava.enabled = false
+//processResources.enabled = false
+//jar.enabled = false
+//bootJar.enabled = false
+//assemble.enabled = false
+//generateVersionInfo.enabled = false
 
 dependencies {
-    compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
+    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
 
     //to get ant.sql working
     db group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'

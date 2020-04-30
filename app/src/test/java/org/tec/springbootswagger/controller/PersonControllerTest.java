@@ -19,6 +19,7 @@ import org.tec.springbootswagger.test.config.TestConfig;
 import org.tec.springbootswagger.test.controller.ControllerTestUtils;
 
 import java.util.Map;
+import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes={SpringbootSwaggerApplication.class, TestConfig.class})
@@ -37,8 +38,10 @@ public class PersonControllerTest {
 
     @Test
     public void get() {
-        PersonEntity pe = personRepository.findByEmail("user1@example.net");
-        Assertions.assertNotNull(pe);
+        Optional<PersonEntity> opt = personRepository.findByEmail("user1@example.net");
+        Assertions.assertTrue(opt.isPresent());
+
+        PersonEntity pe = opt.get();
 
         Map<String, String> headers = controllerTestUtils.getHeadersWithAuth(pe.getEmail(),
                 pe.getEmail().replace("@example.net", StringUtils.EMPTY));

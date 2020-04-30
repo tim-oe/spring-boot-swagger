@@ -12,6 +12,6 @@ import java.util.Properties;
 @NoArgsConstructor
 @ToString
 public class Status {
-    String appName;
-    Properties versionInformation;
+    private String appName;
+    private Properties versionInformation;
 }
