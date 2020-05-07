@@ -11,7 +11,7 @@
  * https://stackoverflow.com/questions/44429751/how-to-use-junit-5-with-gradle
  *
  * to  get deps you have to be within the subproject
- * gradle dependencies --configuration=<compile, testCompile>
+ * gradle dependencies --configuration=<compile, testImplementation>
  **/
 buildscript {
     dependencies {
@@ -211,6 +211,22 @@ info.build.sourceType = ${rootProject.versioning.info.branchType}
 
     dependencies {
         compileOnly  group: 'com.github.spotbugs', name: 'spotbugs-annotations', version: '3.1.12'
-        compileOnly  group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+
+        //https://github.com/rzwitserloot/lombok/issues/1945
+        annotationProcessor 'org.projectlombok:lombok'
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+        
+        // logging
+        implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+        implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+
+        // upgrade causes errors
+        // https://stackoverflow.com/questions/53926264/nosuchmethoderror-org-junit-platform-commons-util-reflectionutils-trytoloadclas
+        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.2'
+        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.3.2'
+        testImplementation group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.3.2'
+
+        testImplementation group: 'org.springframework', name: 'spring-test', version: '5.1.5.RELEASE'
+        testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: "$SPRING_BOOT_VERSION"
     }
 }

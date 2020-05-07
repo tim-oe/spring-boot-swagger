@@ -1,9 +1,7 @@
-
+// https://flywaydb.org/
 plugins {
     id 'org.flywaydb.flyway' version '6.4.0'
 }
-
-version '0.0.1-SNAPSHOT'
 
 configurations {
     db
@@ -24,10 +22,10 @@ configurations {
 //generateVersionInfo.enabled = false
 
 dependencies {
-    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
+    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client'
 
     //to get ant.sql working
-    db group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
+    db group: 'org.mariadb.jdbc', name: 'mariadb-java-client'
 }
 
 // https://flywaydb.org/getstarted/firststeps/gradle

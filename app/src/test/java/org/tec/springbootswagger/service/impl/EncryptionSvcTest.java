@@ -21,5 +21,6 @@ public class EncryptionSvcTest {
         System.out.println(encryptionSvc.hashPassword("user1"));
         System.out.println(encryptionSvc.hashPassword("user2"));
         System.out.println(encryptionSvc.hashPassword("user3"));
+        System.out.println(encryptionSvc.hashPassword("owner"));
     }
 }

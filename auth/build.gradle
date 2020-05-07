@@ -1,0 +1,81 @@
+//disable for test
+pmdTest.enabled=false
+spotbugsTest.enabled=false
+
+version = '0.0.1-SNAPSHOT'
+
+bootJar {
+    mainClassName = 'org.tec.noaa.NoaaApplication'
+}
+
+// https://mkyong.com/junit5/junit-5-tagging-and-filtering-tag-examples/?__cf_chl_captcha_tk__=9efb722e1d759cbd022e21221ee52b5df13dd114-1587670049-0-AXsLIBoV-gT1xa4wFkzZwHFtQgHgTfAqiVkblrfsmmzytTYLhoJIMBlsBPPR8NLdZK5tzxVz2uPc0XRDZtAkhX0uNQVFDkmCFUqlZKin_kdLOqhDqVMDR_v4ubox9DzKpXiy_LrtsKY35xOkDcZ1t1mkdPADfpSDp61wd8n43wwJs97rNhUPzjXDFzl7Vt8wGBdlRk9cBVqfeMwuLQ7PZBaSn1Vj5ELeFf6lAjZ65WVkm_A5Lwoh3eNcmWJeUyEgZUi1AS2aqOn6jV_9TmmdBCHtiqzp4_oMo4m2OIhioNfj1wHhA7CnVetNDFvK8CANLNssqOyajUJk69B8utO97kBHFpX-rs40mZKDTcdP2-cxjYYT0hVpuKpuhb2ewZJLV8IcSp7gVf5SCIVCWuluDsU9Ck5-ACUsHeK9QeihZbQr1BA-NZUj1xy_3A73vljZhjBQnuIgQ7cH6VEen6VyLp9uGNNE3y4feAWqWiPuUT6guwKg3G7vBKAUSBmz1LW088rILLF3-AEhclarM_eQrYV8lQZqRWV_oYUTqcjeEuJxM5T9ofWBEf3mPlIPx5GZy1IcIlFCMdGrXUkqSwao_QXDek4ZksNtYYiHqEVMhwTo
+task serverTest(type: Test) {
+    useJUnitPlatform {
+        includeTags 'server'
+    }
+
+    testLogging.showStandardStreams = true
+    testLogging.showStackTraces = true
+
+    // Always run tests, even when nothing changed.
+    dependsOn 'cleanTest'
+
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+    finalizedBy jacocoTestReport
+}
+
+dependencies {
+
+    // datasource deps
+    implementation group: 'com.zaxxer', name: 'HikariCP', version: '3.4.2'
+    runtimeOnly group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.6.0'
+
+    // logging
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+    implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+
+    // https://github.com/rzwitserloot/lombok/wiki
+    // https://projectlombok.org/features/all
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.12'
+    compileOnly group: 'com.github.spotbugs', name: 'spotbugs-annotations', version: '4.0.2'
+
+    //apache commons
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.10'
+
+    implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+
+    // spring boot stuff
+    // https://docs.spring.io/spring-boot/docs/current/reference/html/
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "$SPRING_BOOT_VERSION"
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: "$SPRING_BOOT_VERSION"
+
+    implementation group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version: "$SPRING_BOOT_VERSION"
+
+    // spring data stuff
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: "$SPRING_BOOT_VERSION"
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-cache', version: "$SPRING_BOOT_VERSION"
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: "$SPRING_BOOT_VERSION"
+
+    implementation group: 'com.google.guava', name: 'guava', version: '29.0-jre'
+
+    // unit testing
+    // upgrade causes errors or tests do not run...
+    // https://stackoverflow.com/questions/53926264/nosuchmethoderror-org-junit-platform-commons-util-reflectionutils-trytoloadclas
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.2'
+    testRuntime group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.3.2'
+
+    //spring boot test includes spring mock
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: "$SPRING_BOOT_VERSION"
+
+    // https://stackoverflow.com/questions/44849827/mock-securitycontextholder-authentication-always-returning-null
+    testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.3.1.RELEASE'
+
+    testImplementation group: 'org.springframework', name: 'spring-web', version: "$SPRING_VERSION"
+
+    testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.3.3'
+    testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '3.3.3'
+}

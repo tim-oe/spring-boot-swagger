@@ -28,7 +28,7 @@ CREATE TABLE person_history
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;
 
-CREATE TABLE Role
+CREATE TABLE role
 (
     id         tinyint(3) unsigned NOT NULL COMMENT 'unique identifier',
     short_desc varchar(32)         NOT NULL COMMENT 'the short description tied to the enum name',
@@ -36,7 +36,7 @@ CREATE TABLE Role
     PRIMARY KEY (id),
     UNIQUE KEY name_UNIQUE (short_desc)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;;
+  DEFAULT CHARSET = utf8;
 
 CREATE TABLE person_role
 (
@@ -45,7 +45,7 @@ CREATE TABLE person_role
     role_id   tinyint(3) unsigned NOT NULL COMMENT 'linkage to the role',
     PRIMARY KEY (id),
     KEY person_idx (person_id)
-) ENGINE = InnoDB;;
+) ENGINE = InnoDB;
 
 CREATE TABLE oauth_access_token
 (
@@ -61,7 +61,7 @@ CREATE TABLE oauth_access_token
     UNIQUE KEY authentication_id_unq (authentication_id),
     KEY user_name_idx (user_name)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;;
+  DEFAULT CHARSET = utf8;
 
 CREATE TABLE oauth_refresh_token
 (
@@ -71,4 +71,4 @@ CREATE TABLE oauth_refresh_token
     last_updated   timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (token_id)
 ) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;;
+  DEFAULT CHARSET = utf8;

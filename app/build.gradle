@@ -6,16 +6,9 @@ bootJar {
 }
 
 dependencies {
-    //https://github.com/rzwitserloot/lombok/issues/1945
-    annotationProcessor 'org.projectlombok:lombok'
-    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-
-    // logging
-    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.28'
-
     // datasource deps
-    implementation group: 'com.zaxxer', name: 'HikariCP', version: '3.4.1'
-    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
+    implementation group: 'com.zaxxer', name: 'HikariCP'
+    implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client'
 
     // mongo
     implementation group: 'org.mongodb', name: 'mongo-java-driver', version: '3.11.0'
