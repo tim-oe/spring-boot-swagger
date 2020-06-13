@@ -17,10 +17,7 @@ buildscript {
     dependencies {
         // workaround for failing spotbugs with lint
         // https://github.com/spotbugs/spotbugs-gradle-plugin/issues/128
-        classpath group: 'com.google.guava', name: 'guava', version: '28.1-jre'
-        //classpath group: 'com.google.code.findbugs', name: 'annotations', version: '3.0.1'
-        //classpath group: 'com.github.spotbugs', name: 'spotbugs-annotations', version: '3.1.12'
-        //classpath group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
+        classpath group: 'com.google.guava', name: 'guava', version: '29.0-jre'
     }
 }
 
@@ -41,37 +38,50 @@ plugins {
 
     // https://plugins.gradle.org/plugin/org.springframework.boot
     // https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/html/
-    id 'org.springframework.boot' version "$SPRING_BOOT_VERSION"
+    id 'org.springframework.boot' version '2.2.6.RELEASE'
 
     // https://plugins.gradle.org/plugin/com.github.spotbugs
     // https://spotbugs.readthedocs.io/en/stable/gradle.html
     // https://remal.gitlab.io/gradle-plugins/
-    id "com.github.spotbugs" version "3.0.0"
+    id "com.github.spotbugs" version "4.2.0"
 
+    // https://plugins.gradle.org/plugin/io.freefair.lombok
     // https://projectlombok.org/
-    id "io.freefair.lombok" version "5.0.0"
+    id "io.freefair.lombok" version "5.0.1"
 
+    // https://plugins.gradle.org/plugin/net.nemerosa.versioning
     // https://github.com/nemerosa/versioning
-    id 'net.nemerosa.versioning' version '2.13.1'
+    // gradle versionDisplay | versionFile
+    id 'net.nemerosa.versioning' version '2.12.1'
 
-    // https://plugins.gradle.org/plugin/com.dorongold.task-tree?_ga=2.131107277.316649141.1568123579-1432479684.1568123579
+    // https://plugins.gradle.org/plugin/com.dorongold.task-tree
     // example gradle :OEApi:build :OEApi:taskTree
     id "com.dorongold.task-tree" version "1.5"
 
     // https://docs.gradle.org/current/userguide/jacoco_plugin.html
     id 'jacoco'
 
+    // https://plugins.gradle.org/plugin/nebula.lint
     // https://github.com/nebula-plugins/gradle-lint-plugin
     // https://github.com/nebula-plugins/gradle-lint-plugin/wiki
     // https://github.com/nebula-plugins/gradle-lint-plugin/wiki/Using-Lint
-    id 'nebula.lint' version '16.8.0'
+    id 'nebula.lint' version '16.7.0'
+
+    // https://docs.gradle.org/current/userguide/publishing_maven.html
+    id 'maven-publish'
 }
+
 // this needs to be here for global plugin refs
 repositories {
-    mavenCentral()
-    jcenter()
+    maven {
+        url "http://localhost:8082/artifactory/maven-central-remote"
+    }
+    maven {
+        url "http://localhost:8082/artifactory/jcenter-remote"
+    }
     maven {
         url "https://plugins.gradle.org/m2/"
+        //url "http://localhost:8082/artifactory/plugins-remote"
     }
 }
 
@@ -95,17 +105,17 @@ subprojects {
     apply plugin: 'jacoco'
     apply plugin: 'nebula.lint'
 
-    // this needs to be here to allow references to sub project deps
     repositories {
-        mavenCentral()
-        jcenter()
+        maven {
+            url "http://localhost:8082/artifactory/maven-central-remote"
+        }
+        maven {
+            url "http://localhost:8082/artifactory/jcenter-remote"
+        }
         maven {
             url "https://plugins.gradle.org/m2/"
+            //url "http://localhost:8082/artifactory/plugins-remote"
         }
-        // https://docs.aws.amazon.com/redshift/latest/mgmt/configure-jdbc-connection-with-maven.html
-        //maven {
-        //    url "http://redshift-maven-repository.s3-website-us-east-1.amazonaws.com/release"
-        //}
     }
 
     sourceCompatibility = '1.11'
@@ -157,15 +167,21 @@ info.build.sourceType = ${rootProject.versioning.info.branchType}
 
     processResources.dependsOn generateVersionInfo
 
-    // https://github.com/spotbugs/spotbugs-gradle-plugin/issues/32
-    // https://spotbugs.readthedocs.io/en/latest/gradle.html
-    // https://spotbugs.readthedocs.io/en/latest/gradle.html#configure-gradle-plugin
-    tasks.withType(com.github.spotbugs.SpotBugsTask) {
+// https://github.com/spotbugs/spotbugs-gradle-plugin/issues/32
+// https://spotbugs.readthedocs.io/en/latest/gradle.html
+// https://github.com/spotbugs/spotbugs-gradle-plugin#readme
+    spotbugs {
         ignoreFailures = false
+        toolVersion = "4.0.4"
+    }
 
+    spotbugsMain {
         reports {
-            xml.enabled = false
-            html.enabled = true
+            html {
+                enabled = true
+                destination = file("$buildDir/reports/spotbugs/main/spotbugs.html")
+                stylesheet = 'fancy-hist.xsl'
+            }
         }
     }
 
@@ -213,6 +229,7 @@ info.build.sourceType = ${rootProject.versioning.info.branchType}
         compileOnly  group: 'com.github.spotbugs', name: 'spotbugs-annotations', version: '3.1.12'
 
         //https://github.com/rzwitserloot/lombok/issues/1945
+        // https://stackoverflow.com/questions/17729384/lombok-added-but-getters-and-setters-not-recognized-in-intellij-idea
         annotationProcessor 'org.projectlombok:lombok'
         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
         
@@ -220,13 +237,21 @@ info.build.sourceType = ${rootProject.versioning.info.branchType}
         implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
         implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.2.3'
 
+        // encrypt secrets in config files
+        // https://medium.com/@sun30nil/how-to-secure-secrets-and-passwords-in-springboot-90c952961d9
+        // TODO gradle task it?
+        //java -cp ~/bin/jasypt-1.9.3.jar org.jasypt.intf.cli.JasyptPBEStringEncryptionCLI input=<val to encrypt> password=oe-dev-key algorithm=PBEWITHMD5ANDDES
+        implementation group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.2'
+
         // upgrade causes errors
         // https://stackoverflow.com/questions/53926264/nosuchmethoderror-org-junit-platform-commons-util-reflectionutils-trytoloadclas
-        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.3.2'
-        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.3.2'
-        testImplementation group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.3.2'
+        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: "$JUNIT_VERSION"
+        testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: "$JUNIT_VERSION"
 
-        testImplementation group: 'org.springframework', name: 'spring-test', version: '5.1.5.RELEASE'
+        testImplementation group: 'org.springframework', name: 'spring-test', version: "$SPRING_VERSION"
         testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: "$SPRING_BOOT_VERSION"
+
+        testImplementation group: 'org.mockito', name: 'mockito-core', version: "$MOCKITO_VERSION"
+        testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: "$MOCKITO_VERSION"
     }
 }

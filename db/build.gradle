@@ -8,18 +8,18 @@ configurations {
 }
 
 // https://discuss.gradle.org/t/skipping-a-systemtest-task-for-a-specific-submodule/13121
-//processTestResources.enabled = false
-//testClasses.enabled = false
-//test.enabled = false
-//spotbugsMain.enabled = false
-//spotbugsTest.enabled = false
-//pmdTest.enabled = false
-//compileTestJava.enabled = false
-//processResources.enabled = false
-//jar.enabled = false
-//bootJar.enabled = false
-//assemble.enabled = false
-//generateVersionInfo.enabled = false
+processTestResources.enabled = false
+testClasses.enabled = false
+test.enabled = false
+spotbugsMain.enabled = false
+spotbugsTest.enabled = false
+pmdTest.enabled = false
+compileTestJava.enabled = false
+processResources.enabled = false
+jar.enabled = false
+bootJar.enabled = false
+assemble.enabled = false
+generateVersionInfo.enabled = false
 
 dependencies {
     implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client'
@@ -60,6 +60,11 @@ task dbReset {
             transaction {
                 fileset(dir: "$projectDir/src/main/sql/data") {
                     include(name: '*.sql')
+                }
+            }
+            transaction {
+                fileset(dir: "$project.gradle.gradleUserHomeDir") {
+                    include(name: 'tec-custom.sql')
                 }
             }
         }

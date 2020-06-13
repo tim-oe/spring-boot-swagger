@@ -6,7 +6,8 @@ CREATE TABLE person
     first_name varchar(30) DEFAULT NULL COMMENT 'first name',
     last_name  varchar(50) DEFAULT NULL COMMENT 'last name',
     zipcode    varchar(5)  DEFAULT NULL COMMENT 'zipcode location',
-    enabled    BOOLEAN     DEFAULT false COMMENT 'whether person is enabled',
+    enabled    BOOLEAN     DEFAULT TRUE COMMENT 'whether person is enabled',
+    locked     BOOLEAN     DEFAULT FALSE COMMENT 'whether account is locked',
     PRIMARY KEY (id),
     UNIQUE KEY email_idx (email)
 ) ENGINE = InnoDB
@@ -22,6 +23,8 @@ CREATE TABLE person_history
     pwd_hash   varchar(512)       NOT NULL,
     first_name varchar(30)                 DEFAULT NULL,
     last_name  varchar(50)                 DEFAULT NULL,
+    enabled    BOOLEAN     DEFAULT TRUE COMMENT 'whether person is enabled',
+    locked     BOOLEAN     DEFAULT FALSE COMMENT 'whether account is locked',
     created    timestamp          NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     KEY person_id_idx (person_id)
@@ -45,30 +48,5 @@ CREATE TABLE person_role
     role_id   tinyint(3) unsigned NOT NULL COMMENT 'linkage to the role',
     PRIMARY KEY (id),
     KEY person_idx (person_id)
-) ENGINE = InnoDB;
-
-CREATE TABLE oauth_access_token
-(
-    token_id          varchar(32) NOT NULL,
-    token             blob,
-    authentication_id varchar(32) NOT NULL,
-    user_name         varchar(100)         DEFAULT NULL,
-    client_id         varchar(32)          DEFAULT NULL,
-    authentication    blob,
-    refresh_token     varchar(32)          DEFAULT NULL,
-    last_updated      timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (token_id),
-    UNIQUE KEY authentication_id_unq (authentication_id),
-    KEY user_name_idx (user_name)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
-
-CREATE TABLE oauth_refresh_token
-(
-    token_id       varchar(32) NOT NULL,
-    token          blob,
-    authentication blob,
-    last_updated   timestamp   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (token_id)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8;

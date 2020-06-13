@@ -48,7 +48,8 @@ public class NoaaApplication {
 		om.registerModule(new JavaTimeModule());
 
 		if(typed) {
-			//https://fasterxml.github.io/jackson-databind/javadoc/2.8/com/fasterxml/jackson/databind/ObjectMapper.html#enableDefaultTypingAsProperty(com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping,%20java.lang.String)
+			// https://fasterxml.github.io/jackson-databind/javadoc/2.10/com/fasterxml/jackson/databind/ObjectMapper.html#activateDefaultTypingAsProperty-com.fasterxml.jackson.databind.jsontype.PolymorphicTypeValidator-com.fasterxml.jackson.databind.ObjectMapper.DefaultTyping-java.lang.String-
+			// TODO
 			om.enableDefaultTypingAsProperty(ObjectMapper.DefaultTyping.NON_FINAL, BEAN_TYPE_KEY);
 		}
 
